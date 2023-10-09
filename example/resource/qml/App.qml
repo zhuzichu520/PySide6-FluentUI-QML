@@ -9,7 +9,8 @@ Window {
     flags: Qt.SplashScreen
     Component.onCompleted: {
         FluApp.init(app)
-        FluTheme.darkMode = FluThemeType.System
+        FluTheme.darkMode = SettingsHelper.getDarkMode()
+        console.debug(SettingsHelper.getDarkMode())
         FluTheme.enableAnimation = true
         FluApp.routes = {
             "/":"qrc:/example/qml/window/MainWindow.qml"

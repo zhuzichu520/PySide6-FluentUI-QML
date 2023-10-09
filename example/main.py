@@ -4,14 +4,19 @@ import sys
 from PySide6.QtGui import QGuiApplication
 from PySide6.QtQml import QQmlApplicationEngine
 
-# sys.path.append("D:\PyProjects\PySide6-FluentUI-QML")
 import FluentUI
-import resource.res as res
+import resource.example_rc
+from Helper import SettingsHelper
 
 if __name__ == "__main__":
-    print(res.__file__)
+    QGuiApplication.setOrganizationName("ZhuZiChu")
+    QGuiApplication.setOrganizationDomain("https://zhuzichu520.github.io")
+    QGuiApplication.setApplicationName("FluentUI")
+    SettingsHelper().init()
     app = QGuiApplication(sys.argv)
     engine = QQmlApplicationEngine()
+    rootContext = engine.rootContext()
+    rootContext.setContextProperty("SettingsHelper", SettingsHelper())
     FluentUI.init(engine)
     print(engine.importPathList())
     qml_file = "qrc:/example/qml/App.qml"

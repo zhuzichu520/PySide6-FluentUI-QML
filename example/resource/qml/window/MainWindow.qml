@@ -14,15 +14,6 @@ FluWindow {
     minimumWidth: 520
     minimumHeight: 200
 
-    FluText{
-        text:"asd"
-        anchors.bottom: parent.bottom
-    }
-
-    FluButton{
-        anchors.centerIn: parent
-        text:"123"
-    }
 
 
 
