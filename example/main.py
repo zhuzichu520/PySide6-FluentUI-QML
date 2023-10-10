@@ -16,6 +16,7 @@ from PySide6.QtQml import QQmlApplicationEngine
 # sys.path.append("D:\PyProjects\PySide6-FluentUI-QML")
 import FluentUI
 #----------------------------------------------------------
+# tips：如果使用QtCreator进行QML编写 import FluentUI爆红导致代码无法自动补全，请按https://github.com/zhuzichu520/PySide6-FluentUI-QML/wiki/Qml-code-completion 这个方法解决
 from helper.SettingsHelper import SettingsHelper
 from AppInfo import AppInfo
 import resource.example_rc as rc
