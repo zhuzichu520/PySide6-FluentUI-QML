@@ -1,3 +1,14 @@
 {
-    "files": ["main.py","resource/example.qrc", "resource/example_rc.py"]
+    "files": [
+    "main.py",
+    "AppInfo.py",
+    "define.py",
+    "define.py",
+    "helper/SettingsHelper.py",
+    "component/CircularReveal.py",
+    "component/FileWatcher.py",
+    "component/FpsItem.py",
+    "resource/example.qrc",
+    "resource/example_rc.py"
+    ]
 }
