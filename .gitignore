@@ -1,6 +1,6 @@
 .roperproject
 *.pyproject.user
 *.pyc
-*.example_rc.py
+example_rc.py
 build
 dist
