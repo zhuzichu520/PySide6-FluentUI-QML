@@ -1,3 +1,3 @@
 {
-    "files": ["main.py","Bridge.py", "resource/example.qrc", "resource/example_rc.py"]
+    "files": ["main.py","resource/example.qrc", "resource/example_rc.py"]
 }

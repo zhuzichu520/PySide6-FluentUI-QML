@@ -1,12 +1,15 @@
 # This Python file uses the following encoding: utf-8
 import sys
-
 from PySide6.QtGui import QGuiApplication
 from PySide6.QtQml import QQmlApplicationEngine
 
 import FluentUI
-import resource.example_rc
-from Helper import SettingsHelper
+from helper.SettingsHelper import SettingsHelper
+from AppInfo import AppInfo
+import resource.example_rc as rc
+from component.CircularReveal import CircularReveal
+from component.FileWatcher import FileWatcher
+from component.FpsItem import FpsItem
 
 if __name__ == "__main__":
     QGuiApplication.setOrganizationName("ZhuZiChu")
@@ -17,6 +20,7 @@ if __name__ == "__main__":
     engine = QQmlApplicationEngine()
     rootContext = engine.rootContext()
     rootContext.setContextProperty("SettingsHelper", SettingsHelper())
+    rootContext.setContextProperty("AppInfo", AppInfo())
     FluentUI.init(engine)
     print(engine.importPathList())
     qml_file = "qrc:/example/qml/App.qml"
