@@ -13,7 +13,7 @@ class AppInfo(QObject):
 
     version_changed = Signal()
 
-    @Property(str)
+    @Property(str,notify=version_changed)
     def version(self):
         return self._version
 
