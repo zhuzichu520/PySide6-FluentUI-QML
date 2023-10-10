@@ -2,3 +2,5 @@
 *.pyproject.user
 *.pyc
 *.example_rc.py
+build
+dist
