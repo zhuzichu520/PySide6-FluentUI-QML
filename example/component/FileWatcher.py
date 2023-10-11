@@ -11,6 +11,7 @@ QML_IMPORT_MAJOR_VERSION = 1
 class FileWatcher(QObject):
 
     fileChanged = Signal()
+    pathChanged = Signal()
 
     def __init__(self):
         QObject.__init__(self)
@@ -26,21 +27,19 @@ class FileWatcher(QObject):
         def onPathChanged():
             self.clean()
             self._watcher.addPath(self._path.replace("file:///", ""))
-        self.path_changed.connect(lambda: onPathChanged())
+        self.pathChanged.connect(lambda: onPathChanged())
         if (self._path != ""):
             self._watcher.addPath(self._path)
-
-    path_changed = Signal()
 
     def clean(self):
         for item in self._watcher.files:
             self._watcher.removePath(item)
 
-    @Property(str, notify=path_changed)
+    @Property(str, notify=pathChanged)
     def path(self):
         return self._path
 
     @path.setter
     def path(self, val):
         self._path = val
-        self.path_changed.emit()
+        self.pathChanged.emit()

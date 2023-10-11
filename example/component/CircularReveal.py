@@ -11,8 +11,11 @@ QML_IMPORT_MAJOR_VERSION = 1
 
 @QmlNamedElement("CircularReveal")
 class CircularReveal(QQuickPaintedItem):
+
     imageChanged = Signal()
     animationFinished = Signal()
+    targetChanged = Signal()
+    radiusChanged = Signal()
 
     def __init__(self):
         QQuickPaintedItem.__init__(self)
@@ -65,8 +68,6 @@ class CircularReveal(QQuickPaintedItem):
         self._grabResult = self._target.grabToImage(QSize(w, h))
         self._grabResult.data().ready.connect(self.handleGrabResult)
 
-    targetChanged = Signal()
-
     @Property(QQuickItem, notify=targetChanged)
     def target(self):
         return self._target
@@ -75,8 +76,6 @@ class CircularReveal(QQuickPaintedItem):
     def target(self, val):
         self._target = val
         self.targetChanged.emit()
-
-    radiusChanged = Signal()
 
     @Property(int, notify=radiusChanged)
     def radius(self):

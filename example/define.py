@@ -11,10 +11,3 @@ def Singleton(cls):
             _instance[cls] = cls(*args, **kwargs)
         return _instance[cls]
     return wrapper
-
-
-def PropertyAuto(data_type, name, default_value):
-    def decorator(cls):
-        setattr(cls, name, data_type(default_value))
-        return cls
-    return decorator

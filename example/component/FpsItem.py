@@ -11,6 +11,8 @@ QML_IMPORT_MAJOR_VERSION = 1
 @QmlNamedElement("FpsItem")
 class FpsItem(QQuickPaintedItem):
 
+    fpsChanged = Signal()
+
     def __init__(self):
         QQuickPaintedItem.__init__(self)
         self._frameCount: int = 0
@@ -32,8 +34,6 @@ class FpsItem(QQuickPaintedItem):
     def onTimeout(self):
         self.fps = self._frameCount
         self._frameCount = 0
-
-    fpsChanged = Signal()
 
     @Property(int, notify=fpsChanged)
     def fps(self):
