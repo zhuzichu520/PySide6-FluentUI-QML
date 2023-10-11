@@ -120,4 +120,4 @@ This FluentUI library currently licensed under [MIT License](./License)
 [![Star History Chart](https://api.star-history.com/svg?repos=zhuzichu520/FluentUI&type=Date)](https://star-history.com/#zhuzichu520/FluentUI&Date)
 
 ## ⚡ Visitor count
-![](https://profile-counter.glitch.me/zhuzichu520-FluentUI/count.svg)
+![](https://profile-counter.glitch.me/zhuzichu520-PySide6-FluentUI-QML/count.svg)
