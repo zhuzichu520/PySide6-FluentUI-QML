@@ -65,7 +65,7 @@ English | <a href="README_zh_CN.md">简体中文</a>
 View more [`here`](doc/md/all_components.md)!
 
 ## Reference
-+ [**FluentUI for qml**: C++ and QML.](https://github.com/zhuzichu520/PySide6-FluentUI-QML)
++ [**FluentUI for qml**: C++ and QML.](https://github.com/zhuzichu520/FluentUI)
 + [**Windows design**: Design guidelines and toolkits of Microsoft.](https://learn.microsoft.com/en-us/windows/apps/design/)
 + [**Microsoft/WinUI-Gallery**: Microsoft's demo](https://github.com/microsoft/WinUI-Gallery)
 
