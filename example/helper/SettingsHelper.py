@@ -8,25 +8,25 @@ from define import Singleton
 class SettingsHelper(QObject):
     def __init__(self, par=None):
         super().__init__(parent=par)
-        self.__settings = QSettings()
+        self._settings = QSettings()
 
     def init(self):
         applicationPath = QCoreApplication.applicationFilePath()
         iniFileName = "example.ini"
         iniFilePath = QStandardPaths.writableLocation(
             QStandardPaths.AppLocalDataLocation)+"/"+iniFileName
-        self.__settings = QSettings(iniFilePath, QSettings.IniFormat)
-        print("Application configuration file path ->", self.__settings.fileName)
+        self._settings = QSettings(iniFilePath, QSettings.IniFormat)
+        print("Application configuration file path ->", self._settings.fileName)
 
     def _save(self, key, val):
         data = QByteArray()
         stream = QDataStream(data, QIODevice.WriteOnly)
         stream.setVersion(QDataStream.Qt_5_6)
         stream.writeQVariant(val)
-        self.__settings.setValue(key, data)
+        self._settings.setValue(key, data)
 
     def _get(self, key):
-        data = QByteArray(self.__settings.value(key))
+        data = QByteArray(self._settings.value(key))
         if data.isEmpty():
             return
         stream = QDataStream(data)
