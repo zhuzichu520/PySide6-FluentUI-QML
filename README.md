@@ -18,7 +18,6 @@ English | <a href="README_zh_CN.md">简体中文</a>
   <img src="doc/preview/demo_large.png">
 </div>
 
-
 [win-link]: https://github.com/zhuzichu520/FluentUI/actions?query=workflow%3AWindows "WindowsAction"
 [win-badge]: https://github.com/zhuzichu520/FluentUI/workflows/Windows/badge.svg  "Windows"
 [ubuntu-link]: https://github.com/zhuzichu520/FluentUI/actions?query=workflow%3AUbuntu "UbuntuAction"
@@ -31,54 +30,14 @@ English | <a href="README_zh_CN.md">简体中文</a>
 [download-badge]: https://img.shields.io/github/downloads/zhuzichu520/FluentUI/total.svg "Download status"
 [download-latest]: https://img.shields.io/github/downloads/zhuzichu520/PySide6-FluentUI-QML/latest/total.svg "latest status"
 
-
-<p align=center>
-This is a beautiful FluentUI component library based on Qt QML. Currently the main branch supports Qt 6. If you want to use it in Qt 5, checkout the Qt 5 branch.
-</p>
-
 ## Requirements
 
-+ Qt Core, Qt Quick, Qt QML, Qt ShaderTool, Qt 5 Compatibility Module. (**Essential**)
-+ Qt LinguistTool (optional,for translations)
-+ Qt Svg (optional, however essential for Qt 5)
-
-Use [Qt Online Installers](https://download.qt.io/archive/online_installers/) to acquire the modules (**Recommended**) or compile them first before using the library.
++ PySide6
++ PySide-FluentUI-QML
 
 ## ⚽ Get started
 
-+ Download the [pre-built release](https://github.com/zhuzichu520/FluentUI/releases). (Please pecify your platform and compilers.)
-
-+ run `example` program.
-
-or 
-
-+ Clone the repository.
-
-```SHELL
-git clone --recursive https://github.com/zhuzichu520/FluentUI.git
-```
-
-+ Build
-
-```
-git clone --recursive https://github.com/zhuzichu520/FluentUI.git
-cd FluentUI
-mkdir build
-cd build
-cmake -DCMAKE_PREFIX_PATH=<YOUR_QT_SDK_DIR_PATH> -DCMAKE_BUILD_TYPE=Release -GNinja <PATH_TO_THE_REPOSITORY>
-cmake --build . --config Release --target all --parallel
-```
-
-+ Use your IDE (`Qt Creator` or `CLion`) to open the project. (only **CMake** supported).
-
-<div align=center>
-  <img src="doc/preview/qt_creator_project.png">
-</div>
-
-+ Compile the project. Then try to execute the `example` demo program.
-
-+ Great! Now you are ready to write your first QML FluentUI program! Check the documentations for more details.
-
+(Work in progress...🚀)
 
 ## 📑 Documentations
 
@@ -105,8 +64,8 @@ cmake --build . --config Release --target all --parallel
 
 View more [`here`](doc/md/all_components.md)!
 
-
 ## Reference
++ [**FluentUI for qml**: C++ and QML.](https://github.com/zhuzichu520/PySide6-FluentUI-QML)
 + [**Windows design**: Design guidelines and toolkits of Microsoft.](https://learn.microsoft.com/en-us/windows/apps/design/)
 + [**Microsoft/WinUI-Gallery**: Microsoft's demo](https://github.com/microsoft/WinUI-Gallery)
 
