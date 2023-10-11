@@ -29,7 +29,7 @@ English | <a href="README_zh_CN.md">简体中文</a>
 [release-badge]: https://img.shields.io/github/release/zhuzichu520/FluentUI.svg?style=flat-square "Release status"
 [download-link]: https://github.com/zhuzichu520/FluentUI/releases/latest "Download status"
 [download-badge]: https://img.shields.io/github/downloads/zhuzichu520/FluentUI/total.svg "Download status"
-[download-latest]: https://img.shields.io/github/downloads/zhuzichu520/FluentUI/latest/total.svg "latest status"
+[download-latest]: https://img.shields.io/github/downloads/zhuzichu520/PySide6-FluentUI-QML/latest/total.svg "latest status"
 
 
 <p align=center>
