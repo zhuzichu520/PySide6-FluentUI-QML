@@ -1,4 +1,5 @@
 # -*- mode: python ; coding: utf-8 -*-
+import os
 from PyInstaller.utils.hooks import collect_all,collect_submodules
 
 datas = [('./resource/example_rc.py', '.')]
@@ -22,9 +23,35 @@ a = Analysis(
     noarchive=False,
 )
 
-excludes_binaries = ['PySide6\\Qt6Location.dll','PySide6\\Qt6WebChannel.dll',PySide6\\Qt6WebEngineQuick.dll','PySide6\\Qt6WebEngineQuickDelegatesQml.dll','PySide6\\Qt6WebSockets.dll','PySide6\\Qt6VirtualKeyboard.dll','PySide6\\Qt6PdfQuick.dll','PySide6\\Qt6Pdf.dll','PySide6\\Qt6QuickTimeline.dll','PySide6\\Qt6DataVisualizationQml.dll','PySide6\\Qt6DataVisualization.dll','PySide6\\Qt6Charts.dll','PySide6\\Qt6ChartsQml.dll','PySide6\\Qt6WebEngineCore.dll','PySide6\\Qt6Quick3D.dll','PySide6\\Qt6Quick3DAssetImport.dll','PySide6\\Qt6Quick3D.dll','PySide6\\Qt6Quick3DAssetUtils.dll','PySide6\\Qt6Quick3DEffects.dll','PySide6\\Qt6Quick3DHelpers.dll','PySide6\\Qt6Quick3DParticleEffects.dll','PySide6\\Qt6Quick3DParticles.dll','PySide6\\Qt6Quick3DRuntimeRender.dll','PySide6\\Qt6Quick3D.dll','PySide6\\Qt6Quick3DUtils.dll']
-	
-a.binaries = [x for x in a.binaries if x[0] not in excludes_binaries]
+excludes_binaries = [
+    'Qt6Location.dll',
+    'Qt6WebChannel.dll',
+    'Qt6WebEngineQuick.dll',
+    'Qt6WebEngineQuickDelegatesQml.dll',
+    'Qt6WebSockets.dll',
+    'Qt6VirtualKeyboard.dll',
+    'Qt6PdfQuick.dll',
+    'Qt6Pdf.dll',
+    'Qt6QuickTimeline.dll',
+    'Qt6DataVisualizationQml.dll',
+    'Qt6DataVisualization.dll',
+    'Qt6Charts.dll',
+    'Qt6ChartsQml.dll',
+    'Qt6WebEngineCore.dll',
+    'Qt6Quick3D.dll',
+    'Qt6Quick3DAssetImport.dll',
+    'Qt6Quick3D.dll',
+    'Qt6Quick3DAssetUtils.dll',
+    'Qt6Quick3DEffects.dll',
+    'Qt6Quick3DHelpers.dll',
+    'Qt6Quick3DParticleEffects.dll',
+    'Qt6Quick3DParticles.dll',
+    'Qt6Quick3DRuntimeRender.dll',
+    'Qt6Quick3D.dll',
+    'Qt6Quick3DUtils.dll'
+    ]
+
+a.binaries = [x for x in a.binaries if os.path.basename(x[0]) not in excludes_binaries]
 
 pyz = PYZ(a.pure)
 
