@@ -14,7 +14,7 @@ def exec():
     }
     template = Template(filename=template_dir)
     rendered_template = template.render(**context)
-    folder_path = './action_cli/'
+    folder_path = './action-cli/'
     if not os.path.exists(folder_path):
         os.makedirs(folder_path)
     with open('./action-cli/InstallerScript.iss', 'w') as file:

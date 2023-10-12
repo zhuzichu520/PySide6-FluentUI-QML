@@ -52,7 +52,7 @@ jobs:
           pyinstaller -y ./example/main.spec
   
       - uses: actions/upload-artifact@v2
-        if: !startsWith(github.event.ref, 'refs/tags/')
+        if: startsWith(github.event.ref, 'refs/tags/') == false
         with:
           name: ${{ env.fileName }}_${{ matrix.qt_arch }}_PySide6
           path: dist
