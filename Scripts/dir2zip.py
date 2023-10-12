@@ -14,7 +14,7 @@ def exec():
             for file in files:
                 file_path = os.path.join(root, file)
                 zipf.write(file_path, os.path.relpath(file_path, folder_to_compress))
-        print(f'{zip_filename} is created')
+    print(f'{zip_filename} is created')
 
 if __name__ == '__main__':
     exec()
