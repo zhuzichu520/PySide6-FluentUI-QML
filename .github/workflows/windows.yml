@@ -48,8 +48,7 @@ jobs:
         shell: pwsh
         run: |
           python ./Scripts/qrc2py.py ./example/resource/example.qrc ./example/resource/example_rc.py
-          cd example
-          pyinstaller main.spec
+          pyinstaller ./example/main.spec
 
       - name: dir to zip  
         env:
@@ -57,19 +56,35 @@ jobs:
           msvcArch: ${{ matrix.msvc_arch }}          
         shell: pwsh
         run: |
-          python ./Scripts/dir2zip.py ./example/dist/example dist.zip
+          python ./Scripts/dir2zip.py ./example/dist/example ${{ env.fileName }}_${{ matrix.qt_arch }}_PySide6.zip
 
       - uses: actions/upload-artifact@v2
         with:
-          name: ${{ env.fileName }}_${{ matrix.qt_arch }}_PySide6
-          path: dist.zip
+          name: ${{ env.fileName }}_${{ matrix.qt_arch }}_PySide6.zip
+          path: dist
+
+      - name: generated InstallerScript.iss
+        if: startsWith(github.event.ref, 'refs/tags/')
+        env:
+          archiveName: ${{ env.fileName }}-${{ matrix.qt_arch }}-${{ matrix.qt_ver }}
+          msvcArch: ${{ matrix.msvc_arch }}          
+        shell: pwsh
+        run: |
+          python ./Scripts/issfile.py
+
+      - name: inno setup install
+        if: startsWith(github.event.ref, 'refs/tags/')
+        uses: zhuzichu520/inno-setup-action@v1.0.1
+        with:
+          filepath: ./action-cli/InstallerScript.iss
 
       - name: uploadRelease
         if: startsWith(github.event.ref, 'refs/tags/')
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: dist.zip
-          asset_name: ${{ env.fileName }}_${{  github.ref_name }}_${{  matrix.qt_arch }}_PySide6.zip
+          file: ./action-cli/installer.exe
+          asset_name: ${{ env.fileName }}_${{ github.ref_name }}_${{ matrix.qt_arch }}_PySide6.exe
           tag: ${{ github.ref }}
-          overwrite: true              
+          overwrite: true     
+
