@@ -17,7 +17,7 @@ def exec():
     folder_path = './action_cli/'
     if not os.path.exists(folder_path):
         os.makedirs(folder_path)
-    with open('./action_cli/InstallerScript.iss', 'w') as file:
+    with open('./action-cli/InstallerScript.iss', 'w') as file:
         file.write(rendered_template)
 
 if __name__ == '__main__':
