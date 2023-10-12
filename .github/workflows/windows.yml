@@ -48,7 +48,7 @@ jobs:
         shell: pwsh
         run: |
           python ./Scripts/qrc2py.py ./example/resource/example.qrc ./example/resource/example_rc.py
-          pyinstaller ./example/main.spec
+          pyinstaller -y ./example/main.spec
   
       - uses: actions/upload-artifact@v2
         with:
