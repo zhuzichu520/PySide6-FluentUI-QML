@@ -49,18 +49,10 @@ jobs:
         run: |
           python ./Scripts/qrc2py.py ./example/resource/example.qrc ./example/resource/example_rc.py
           pyinstaller ./example/main.spec
-
-      - name: dir to zip  
-        env:
-          archiveName: ${{ env.fileName }}-${{ matrix.qt_arch }}-${{ matrix.qt_ver }}
-          msvcArch: ${{ matrix.msvc_arch }}          
-        shell: pwsh
-        run: |
-          python ./Scripts/dir2zip.py ./example/dist/example ${{ env.fileName }}_${{ matrix.qt_arch }}_PySide6.zip
-
+  
       - uses: actions/upload-artifact@v2
         with:
-          name: ${{ env.fileName }}_${{ matrix.qt_arch }}_PySide6.zip
+          name: ${{ env.fileName }}_${{ matrix.qt_arch }}_PySide6
           path: dist
 
       - name: generated InstallerScript.iss
