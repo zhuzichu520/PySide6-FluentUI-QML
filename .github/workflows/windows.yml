@@ -38,8 +38,6 @@ jobs:
           msvcArch: ${{ matrix.msvc_arch }}          
         shell: pwsh
         run: |
-          pip install python-lsp-server[all] --user
-          pip install PySide6 --user
           pip install PySide6-FluentUI-QML
           pip install pyinstaller
           
@@ -49,5 +47,5 @@ jobs:
           msvcArch: ${{ matrix.msvc_arch }}          
         shell: pwsh
         run: |
-          python ./Scripts/qrc2py.exe ./example/resource/example.qrc ./example/resource/example_rc.py
+          ./Scripts/pyside6-rcc.py ./example/resource/example.qrc -o ./example/resource/example_rc.py
           pyinstaller ./example/main.spec     
