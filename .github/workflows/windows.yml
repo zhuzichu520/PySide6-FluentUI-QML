@@ -49,7 +49,7 @@ jobs:
         run: |
           python ./Scripts/qrc2py.py ./example/resource/example.qrc ./example/resource/example_rc.py
           cd example
-          pyinstaller ./example/main.spec
+          pyinstaller main.spec
 
       - name: dir to zip  
         env:
