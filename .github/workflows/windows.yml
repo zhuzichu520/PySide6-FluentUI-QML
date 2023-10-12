@@ -19,7 +19,7 @@ jobs:
       matrix:
         os: [windows-2022]
         include:
-          - qt_ver: 6.5.0        
+          - qt_ver: 6.5.3        
             qt_arch: win64_msvc2019_64
             msvc_arch: x64
             qt_arch_install: msvc2019_64  
@@ -48,4 +48,19 @@ jobs:
         shell: pwsh
         run: |
           python ./Scripts/qrc2py.py ./example/resource/example.qrc ./example/resource/example_rc.py
-          pyinstaller ./example/main.spec     
+          pyinstaller ./example/main.spec
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: ${{ env.fileName }}_${{ matrix.qt_arch }}_PySide6
+          path: example/dist
+
+      - name: uploadRelease
+        if: startsWith(github.event.ref, 'refs/tags/')
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: ${{ steps.package.outputs.packageName }}.zip
+          asset_name: ${{ env.fileName }}_${{  github.ref_name }}_${{  matrix.qt_arch }}_PySide6.zip
+          tag: ${{ github.ref }}
+          overwrite: true              

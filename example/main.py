@@ -5,7 +5,7 @@ from PySide6.QtNetwork import QNetworkProxy
 from PySide6.QtGui import QGuiApplication
 from PySide6.QtQml import QQmlApplicationEngine
 
-# 请通过launch.json运行，直接运行main.py不会执行pyside6-rcc，而导致资源文件缺少，具体逻辑查看tasks.json与Scripts文件夹
+# 请通过launch.json运行，直接运行main.py不会执行pyside6-rcc，而导致资源文件缺少，具体逻辑查看tasks.json与Scripts/qrc2py.py
 # 需要输出exe，安装pip install pyinstaller，然后pyinstaller example/main.spec，打包之前请先执行tasks.json，导出example_rc.py资源文件
 # example_rc.py位置在example/resource文件夹下
 #----------------------------------------------------------
