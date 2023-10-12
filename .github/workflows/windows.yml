@@ -40,3 +40,5 @@ jobs:
         shell: pwsh
         run: |
           pip install PySide6-FluentUI-QML
+          pip install pyinstaller
+          ./Scripts/pyside6-rcc.exe ./example/resource/example.qrc -o ./example/resource/example_rc.py
