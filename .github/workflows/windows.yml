@@ -17,7 +17,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [windows-2019]
+        os: [windows-2022]
         include:
           - qt_ver: 6.5.0        
             qt_arch: win64_msvc2019_64
@@ -39,7 +39,6 @@ jobs:
           msvcArch: ${{ matrix.msvc_arch }}          
         shell: pwsh
         run: |
-          pip install --upgrade pip
           pip install PySide6-FluentUI-QML
           pip install pyinstaller
           ./Scripts/pyside6-rcc.exe ./example/resource/example.qrc -o ./example/resource/example_rc.py
