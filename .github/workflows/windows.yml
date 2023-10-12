@@ -53,7 +53,7 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: ${{ env.fileName }}_${{ matrix.qt_arch }}_PySide6
-          path: example/dist
+          path: ./example/dist
 
       - name: uploadRelease
         if: startsWith(github.event.ref, 'refs/tags/')
