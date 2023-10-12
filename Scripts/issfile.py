@@ -3,14 +3,11 @@ import subprocess
 from mako.template import Template
 
 def exec():
-    result = subprocess.run(['git', 'tag'], cwd='./', stdout=subprocess.PIPE, text=True)
-    output = result.stdout
-    tags = output.splitlines()
-    latest_tag = result.stdout.strip()
+    latest_tag = latest_tag = subprocess.check_output(['git', 'describe', '--tags', '--abbrev=0'], cwd='./', universal_newlines=True).strip()
     print("last: tag", latest_tag)
     template_dir = './.template/InstallerScript.iss.in'
     context = {
-        "GIT_SEMVER" : latest_tag,
+        "GIT_SEMVER" : latest_tag
     }
     template = Template(filename=template_dir)
     rendered_template = template.render(**context)
