@@ -1,0 +1,42 @@
+name: Windows
+on: 
+  push:
+    paths:
+      - 'example/**'
+      - 'FluentUI/**'
+      - '.github/workflows/windows.yml'
+  pull_request:
+    paths:
+      - 'example/**'
+      - 'FluentUI/**'
+      - '.github/workflows/windows.yml'
+      
+jobs:
+  build:
+    name: Build
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-2019]
+        include:
+          - qt_ver: 6.5.0        
+            qt_arch: win64_msvc2019_64
+            msvc_arch: x64
+            qt_arch_install: msvc2019_64  
+    env:
+      targetName: example.exe
+      fileName: example
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
+             
+      - name: package
+        id: package      
+        env:
+          archiveName: ${{ env.fileName }}-${{ matrix.qt_arch }}-${{ matrix.qt_ver }}
+          msvcArch: ${{ matrix.msvc_arch }}          
+        shell: pwsh
+        run: |
+          pip install PySide6-FluentUI-QML
