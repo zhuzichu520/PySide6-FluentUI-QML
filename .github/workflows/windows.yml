@@ -38,6 +38,7 @@ jobs:
           msvcArch: ${{ matrix.msvc_arch }}          
         shell: pwsh
         run: |
+          pip install mako
           pip install PySide6-FluentUI-QML
           pip install pyinstaller
           
