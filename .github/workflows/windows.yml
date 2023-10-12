@@ -32,7 +32,7 @@ jobs:
         with:
           submodules: recursive
              
-      - name: pip install env   
+      - name: install env   
         env:
           archiveName: ${{ env.fileName }}-${{ matrix.qt_arch }}-${{ matrix.qt_ver }}
           msvcArch: ${{ matrix.msvc_arch }}          
@@ -40,7 +40,7 @@ jobs:
         run: |
           pip install python-lsp-server[all] --user
           pip install PySide6 --user
-          pip install PySide6-FluentUI-QML --user
+          pip install PySide6-FluentUI-QML
           pip install pyinstaller
           
       - name: package  
@@ -49,5 +49,5 @@ jobs:
           msvcArch: ${{ matrix.msvc_arch }}          
         shell: pwsh
         run: |
-          ./Scripts/pyside6-rcc.exe ./example/resource/example.qrc -o ./example/resource/example_rc.py
+          python ./Scripts/qrc2py.exe ./example/resource/example.qrc ./example/resource/example_rc.py
           pyinstaller ./example/main.spec     

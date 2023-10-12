@@ -6,10 +6,10 @@
         {
             "label": "Run pyside6-rcc",
             "type": "shell",
-            "command": "./Scripts/pyside6-rcc.exe",
+            "command": "python",
             "args": [
+                "./Scripts/qrc2py.py",
                 "./example/resource/example.qrc",
-                "-o",
                 "./example/resource/example_rc.py"
             ],
             "group": {
