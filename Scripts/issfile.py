@@ -11,8 +11,7 @@ def exec():
     context = {
         "GIT_SEMVER": latest_tag
     }
-    template = Template(filename=template_dir, preprocessor=[
-                        lambda x: x.replace("\r\n", "\n")])
+    template = Template(filename=template_dir)
     rendered_template = template.render(**context)
     folder_path = './action-cli/'
     if not os.path.exists(folder_path):

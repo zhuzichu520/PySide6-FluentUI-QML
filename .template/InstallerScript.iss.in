@@ -23,10 +23,10 @@ DefaultDirName={autopf}\{#MyAppName}
 DisableProgramGroupPage=yes
 ; Uncomment the following line to run in non administrative install mode (install for current user only.)
 ;PrivilegesRequired=lowest
-OutputDir=.\
 OutputBaseFilename=installer
 Compression=lzma
 SolidCompression=yes
+OutputDir=.\ 
 WizardStyle=modern
 UninstallDisplayIcon={app}\{#MyAppExeName}
 SetupIconFile=.\..\favicon.ico
