@@ -11,7 +11,7 @@ class AppInfo(QObject):
 
     def __init__(self):
         QObject.__init__(self)
-        self._version = "1.6.0"
+        self._version = "1.6.1"
 
     @Property(str, notify=versionChanged)
     def version(self):
