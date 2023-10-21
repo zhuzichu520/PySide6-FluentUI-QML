@@ -15,20 +15,13 @@ FluWindow {
     title: "FluentUI"
     width: 1000
     height: 640
-    closeDestory:false
     minimumWidth: 520
     minimumHeight: 200
     launchMode: FluWindowType.SingleTask
-
     appBar: undefined
 
     SettingsViewModel{
         id:viewmodel_settings
-    }
-
-    closeListener:function(event){
-        dialog_close.open()
-        event.accepted = false
     }
 
     FluEvent{
@@ -38,9 +31,8 @@ FluWindow {
             checkUpdate(false)
         }
     }
+
     Component.onCompleted: {
-        console.debug(Lang.about)
-        FluTools.setQuitOnLastWindowClosed(false)
         tour.open()
         checkUpdate(true)
         FluEventBus.registerEvent(event_checkupdate)
@@ -86,7 +78,22 @@ FluWindow {
         positiveText:"退出"
         neutralText:"取消"
         onPositiveClicked:{
-            FluApp.exit()
+            FluApp.exit(0)
+        }
+    }
+
+    Component{
+        id:nav_item_right_menu
+        FluMenu{
+            id:menu
+            width: 130
+            FluMenuItem{
+                text: "在独立窗口打开"
+                visible: true
+                onClicked: {
+                    FluApp.navigate("/pageWindow",{title:modelData.title,url:modelData.url})
+                }
+            }
         }
     }
 
@@ -123,6 +130,7 @@ FluWindow {
                 showDark: true
                 z:7
                 darkClickListener:(button)=>handleDarkChanged(button)
+                closeClickListener: ()=>{dialog_close.open()}
             }
             Row{
                 z:8
@@ -155,7 +163,7 @@ FluWindow {
                 id:loader
                 lazy: true
                 anchors.fill: parent
-                source: "https://zhu-zichu.gitee.io/Qt6_156_LieflatPage.qml"
+                source: "https://zhu-zichu.gitee.io/Qt5_156_LieflatPage.qml"
             }
         }
         front: Item{
@@ -172,6 +180,7 @@ FluWindow {
                 darkText: Lang.dark_mode
                 showDark: true
                 darkClickListener:(button)=>handleDarkChanged(button)
+                closeClickListener: ()=>{dialog_close.open()}
                 z:7
             }
             FluNavigationView{
@@ -210,7 +219,9 @@ FluWindow {
                 }
                 Component.onCompleted: {
                     ItemsOriginal.navigationView = nav_view
+                    ItemsOriginal.paneItemMenu = nav_item_right_menu
                     ItemsFooter.navigationView = nav_view
+                    ItemsFooter.paneItemMenu = nav_item_right_menu
                     setCurrentIndex(0)
                 }
             }
@@ -243,7 +254,7 @@ FluWindow {
     }
 
     function handleDarkChanged(button){
-        if(FluTools.isMacos() || !FluTheme.enableAnimation){
+        if(!FluTheme.enableAnimation){
             changeDark()
         }else{
             loader_reveal.sourceComponent = com_reveal

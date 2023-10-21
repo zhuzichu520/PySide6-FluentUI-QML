@@ -1,10 +1,10 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Controls.Basic
-import QtQuick.Shapes
 import FluentUI
 
 ProgressBar{
+    property int duration: 888
     property real strokeWidth: 6
     property bool progressVisible: false
     property color color: FluTheme.dark ? FluTheme.primaryColor.lighter : FluTheme.primaryColor.dark
@@ -24,7 +24,7 @@ ProgressBar{
         if(!indeterminate){
             animator_r.duration = 0
             layout_item.rotation = 0
-            animator_r.duration = 888
+            animator_r.duration = control.duration
         }
     }
     QtObject{
@@ -49,7 +49,7 @@ ProgressBar{
             from: 0
             to:360
             loops: Animation.Infinite
-            duration: 888
+            duration: control.duration
         }
         Canvas {
             id:canvas

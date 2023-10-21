@@ -49,3 +49,11 @@ class SettingsHelper(QObject):
     @Slot(int)
     def saveDarkMode(self, darkMode):
         self._save("darkMode", darkMode)
+
+    @Slot(result=bool)
+    def getVsync(self):
+        return self._get("vsync")
+
+    @Slot(bool)
+    def saveVsync(self, vsync):
+        self._save("vsync", vsync)

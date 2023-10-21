@@ -15,15 +15,17 @@ Module {
         isCreatable: false
         isSingleton: true
         exportMetaObjectRevisions: [256]
-        Property { name: "initialRoute"; type: "QString"; notify: "initialRouteChanged"; index: 0 }
-        Property { name: "routes"; type: "QJsonObject"; notify: "routesChanged"; index: 1 }
+        Property { name: "vsync"; type: "bool"; notify: "vsyncChanged"; index: 0 }
+        Property { name: "initialRoute"; type: "QString"; notify: "initialRouteChanged"; index: 1 }
+        Property { name: "routes"; type: "QJsonObject"; notify: "routesChanged"; index: 2 }
         Property {
             name: "httpInterceptor"
             type: "FluHttpInterceptor"
             isPointer: true
             notify: "httpInterceptorChanged"
-            index: 2
+            index: 3
         }
+        Signal { name: "vsyncChanged" }
         Signal { name: "initialRouteChanged" }
         Signal { name: "routesChanged" }
         Signal { name: "httpInterceptorChanged" }
@@ -47,7 +49,7 @@ Module {
         }
         Method {
             name: "init"
-            Parameter { name: "window"; type: "QQuickWindow"; isPointer: true }
+            Parameter { name: "window"; type: "QObject"; isPointer: true }
         }
         Method {
             name: "exit"

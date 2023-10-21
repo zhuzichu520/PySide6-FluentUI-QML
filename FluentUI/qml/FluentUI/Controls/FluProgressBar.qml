@@ -1,8 +1,10 @@
 import QtQuick
 import QtQuick.Controls
+import QtQuick.Controls.Basic
 import FluentUI
 
 ProgressBar{
+    property int duration: 888
     property real strokeWidth: 6
     property bool progressVisible: false
     property color color: FluTheme.dark ? FluTheme.primaryColor.lighter : FluTheme.primaryColor.dark
@@ -17,7 +19,7 @@ ProgressBar{
         if(!indeterminate){
             animator_x.duration = 0
             rect_progress.x = 0
-            animator_x.duration = 888
+            animator_x.duration = control.duration
         }
     }
     background: Rectangle {
@@ -46,7 +48,7 @@ ProgressBar{
                 from: -rect_progress.width
                 to:control.width+rect_progress.width
                 loops: Animation.Infinite
-                duration: 888
+                duration: control.duration
             }
         }
     }

@@ -6,6 +6,7 @@ import FluentUI
 FluObject{
 
     property var navigationView
+    property var paneItemMenu
 
     id:footer_items
 
@@ -14,7 +15,6 @@ FluObject{
     FluPaneItem{
         title:Lang.about
         icon:FluentIcons.Contact
-        onDropped: { FluApp.navigate("/about") }
         onTapListener:function(){
             FluApp.navigate("/about")
         }
@@ -22,9 +22,9 @@ FluObject{
 
     FluPaneItem{
         title:Lang.settings
+        menuDelegate: paneItemMenu
         icon:FluentIcons.Settings
         url:"qrc:/example/qml/page/T_Settings.qml"
-        onDropped:{ FluApp.navigate("/pageWindow",{title:title,url:url}) }
         onTap:{
             navigationView.push(url)
         }

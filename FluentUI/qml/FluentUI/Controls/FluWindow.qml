@@ -13,12 +13,14 @@ Window {
     property bool fixSize: false
     property Component loadingItem: com_loading
     property var appBar: com_app_bar
+    flags: Qt.Window | Qt.CustomizeWindowHint | Qt.WindowTitleHint | Qt.WindowSystemMenuHint | Qt.WindowMinMaxButtonsHint | Qt.WindowCloseButtonHint
     property color backgroundColor: {
         if(active){
             return FluTheme.dark ? Qt.rgba(26/255,34/255,40/255,1) : Qt.rgba(243/255,243/255,243/255,1)
         }
         return FluTheme.dark ? Qt.rgba(32/255,32/255,32/255,1) : Qt.rgba(237/255,237/255,237/255,1)
     }
+    property bool stayTop: false
     property var _pageRegister
     property string _route
     property var closeListener: function(event){
@@ -32,15 +34,34 @@ Window {
     signal initArgument(var argument)
     id:window
     color:"transparent"
+    onStayTopChanged: {
+        d.changedStayTop()
+    }
     Component.onCompleted: {
         lifecycle.onCompleted(window)
         initArgument(argument)
+        d.changedStayTop()
     }
     Component.onDestruction: {
         lifecycle.onDestruction()
     }
     onVisibleChanged: {
         lifecycle.onVisible(visible)
+    }
+    onVisibilityChanged: {
+        console.debug(visibility)
+    }
+    QtObject{
+        id:d
+        function changedStayTop(){
+            var visibility = window.visibility
+            if(window.stayTop){
+                window.flags = window.flags | Qt.WindowStaysOnTopHint
+            }else{
+                window.flags = window.flags &~ Qt.WindowStaysOnTopHint
+            }
+            window.visibility = visibility
+        }
     }
     Connections{
         target: window
@@ -91,7 +112,6 @@ Window {
         id:com_loading
         Popup{
             id:popup_loading
-            modal:true
             focus: true
             width: window.width
             height: window.height
@@ -173,6 +193,7 @@ Window {
                 setHitTestVisible(title_bar.minimizeButton())
                 setHitTestVisible(title_bar.maximizeButton())
                 setHitTestVisible(title_bar.closeButton())
+                setHitTestVisible(title_bar.stayTopButton())
                 setWindowFixedSize(fixSize)
                 title_bar.maximizeButton.visible = !fixSize
                 if (blurBehindWindowEnabled)
@@ -183,6 +204,9 @@ Window {
     }
     WindowLifecycle{
         id:lifecycle
+    }
+    WindowBorder{
+        z:999
     }
     function destoryOnClose(){
         lifecycle.onDestoryOnClose()
