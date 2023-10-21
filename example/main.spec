@@ -55,6 +55,12 @@ a.binaries = [x for x in a.binaries if os.path.basename(x[0]) not in excludes_bi
 
 pyz = PYZ(a.pure)
 
+file_version = None
+file_version_name = "action-cli/file_version_info.txt"
+current_directory = os.getcwd()
+file_version_path = os.path.join(current_directory, file_version_name)
+if os.path.exists(file_version_path):
+    file_version = './../action-cli/file_version_info.txt'
 exe = EXE(
     pyz,
     a.scripts,
@@ -71,8 +77,10 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-	icon='./resource/res/image/favicon.ico'
+	icon='./resource/res/image/favicon.ico',
+    version=file_version
 )
+
 coll = COLLECT(
     exe,
     a.binaries,
