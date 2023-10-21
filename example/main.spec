@@ -2,7 +2,9 @@
 import os
 from PyInstaller.utils.hooks import collect_all,collect_submodules
 
-datas = [('./resource/example_rc.py', '.'),('./version.py', '.')]
+datas = [('./resource/example_rc.py', '.')]
+if os.path.exists('./example/version.py'):
+    datas.append(('./version.py', '.'))
 binaries = []
 hiddenimports = []
 excludedimports = []
