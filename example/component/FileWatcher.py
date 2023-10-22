@@ -32,7 +32,7 @@ class FileWatcher(QObject):
             self._watcher.addPath(self._path)
 
     def clean(self):
-        for item in self._watcher.files:
+        for item in self._watcher.files():
             self._watcher.removePath(item)
 
     @Property(str, notify=pathChanged)
