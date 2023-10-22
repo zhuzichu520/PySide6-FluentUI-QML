@@ -26,7 +26,6 @@ class FpsItem(QQuickPaintedItem):
         self._frameCount += 1
 
     def onWindowChanged(self):
-        print(self.window())
         if (self.window()):
             self.window().afterRendering.connect(
                 lambda: self.frameCountIncrease(), Qt.ConnectionType.DirectConnection)

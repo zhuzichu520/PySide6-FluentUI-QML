@@ -10,6 +10,7 @@
             "request": "launch",
             "program": "example/main.py",
             "console": "integratedTerminal",
+            // "console": "externalTerminal",
             "justMyCode": true,
             "preLaunchTask": "Run pyside6-rcc"
         }

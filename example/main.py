@@ -1,6 +1,7 @@
 # This Python file uses the following encoding: utf-8
 import sys
 import os
+from PySide6.QtCore import QProcess
 from PySide6.QtNetwork import QNetworkProxy
 from PySide6.QtGui import QGuiApplication
 from PySide6.QtQml import QQmlApplicationEngine
@@ -25,7 +26,7 @@ from component.CircularReveal import CircularReveal
 from component.FileWatcher import FileWatcher
 from component.FpsItem import FpsItem
 
-if __name__ == "__main__":
+def main():
     QNetworkProxy.setApplicationProxy(QNetworkProxy.ProxyType.NoProxy)
     os.environ["QT_QUICK_CONTROLS_STYLE"] = "Basic"
     QGuiApplication.setOrganizationName("ZhuZiChu")
@@ -43,4 +44,12 @@ if __name__ == "__main__":
     engine.load(qml_file)
     if not engine.rootObjects():
         sys.exit(-1)
-    sys.exit(app.exec())
+    exec = app.exec()
+    if(exec == 931):
+        #QGuiApplication.applicationFilePath()需要打包成exe后才能正确的路径重启，不然这个函数获取的路径是python的路径
+        args = QGuiApplication.arguments()[1:]
+        QProcess.startDetached(QGuiApplication.applicationFilePath(),args)
+    return exec
+
+if __name__ == "__main__":
+    main()
