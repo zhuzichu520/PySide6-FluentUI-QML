@@ -459,16 +459,58 @@ Module {
             isReadonly: true
         }
         Property {
-            name: "primaryColor"
+            name: "themeColor"
             type: "FluColorSet"
             isPointer: true
-            notify: "primaryColorChanged"
+            notify: "themeColorChanged"
             index: 1
         }
-        Property { name: "darkMode"; type: "int"; notify: "darkModeChanged"; index: 2 }
-        Property { name: "nativeText"; type: "bool"; notify: "nativeTextChanged"; index: 3 }
-        Property { name: "enableAnimation"; type: "bool"; notify: "enableAnimationChanged"; index: 4 }
+        Property { name: "primaryColor"; type: "QColor"; notify: "primaryColorChanged"; index: 2 }
+        Property { name: "backgroundColor"; type: "QColor"; notify: "backgroundColorChanged"; index: 3 }
+        Property {
+            name: "windowBackgroundColor"
+            type: "QColor"
+            notify: "windowBackgroundColorChanged"
+            index: 4
+        }
+        Property {
+            name: "windowActiveBackgroundColor"
+            type: "QColor"
+            notify: "windowActiveBackgroundColorChanged"
+            index: 5
+        }
+        Property { name: "fontPrimaryColor"; type: "QColor"; notify: "fontPrimaryColorChanged"; index: 6 }
+        Property {
+            name: "fontSecondaryColor"
+            type: "QColor"
+            notify: "fontSecondaryColorChanged"
+            index: 7
+        }
+        Property {
+            name: "fontTertiaryColor"
+            type: "QColor"
+            notify: "fontTertiaryColorChanged"
+            index: 8
+        }
+        Property { name: "itemNormalColor"; type: "QColor"; notify: "itemNormalColorChanged"; index: 9 }
+        Property { name: "itemHoverColor"; type: "QColor"; notify: "itemHoverColorChanged"; index: 10 }
+        Property { name: "itemPressColor"; type: "QColor"; notify: "itemPressColorChanged"; index: 11 }
+        Property { name: "itemCheckColor"; type: "QColor"; notify: "itemCheckColorChanged"; index: 12 }
+        Property { name: "darkMode"; type: "int"; notify: "darkModeChanged"; index: 13 }
+        Property { name: "nativeText"; type: "bool"; notify: "nativeTextChanged"; index: 14 }
+        Property { name: "enableAnimation"; type: "bool"; notify: "enableAnimationChanged"; index: 15 }
+        Signal { name: "themeColorChanged" }
         Signal { name: "primaryColorChanged" }
+        Signal { name: "backgroundColorChanged" }
+        Signal { name: "windowBackgroundColorChanged" }
+        Signal { name: "windowActiveBackgroundColorChanged" }
+        Signal { name: "fontPrimaryColorChanged" }
+        Signal { name: "fontSecondaryColorChanged" }
+        Signal { name: "fontTertiaryColorChanged" }
+        Signal { name: "itemNormalColorChanged" }
+        Signal { name: "itemHoverColorChanged" }
+        Signal { name: "itemPressColorChanged" }
+        Signal { name: "itemCheckColorChanged" }
         Signal { name: "darkModeChanged" }
         Signal { name: "nativeTextChanged" }
         Signal { name: "enableAnimationChanged" }
@@ -717,9 +759,7 @@ Module {
         exports: ["FluentUI/FluViewModel 1.0"]
         exportMetaObjectRevisions: [256]
         Property { name: "scope"; type: "int"; notify: "scopeChanged"; index: 0 }
-        Property { name: "target"; type: "QObject"; isPointer: true; notify: "targetChanged"; index: 1 }
         Signal { name: "scopeChanged" }
-        Signal { name: "targetChanged" }
         Signal { name: "initData" }
     }
     Component {

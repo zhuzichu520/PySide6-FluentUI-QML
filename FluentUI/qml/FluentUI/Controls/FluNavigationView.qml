@@ -17,8 +17,11 @@ Item {
     property int pageMode: FluNavigationViewType.Stack
     property FluMenu navItemRightMenu
     property FluMenu navItemExpanderRightMenu
+    property int navCompactWidth: 50
+    property int navTopMargin: 0
     property int cellHeight: 38
     property int cellWidth: 300
+    property bool hideNavAppBar: false
     signal logoClicked
     id:control
     Item{
@@ -121,7 +124,7 @@ Item {
                 }
                 return 1
             }
-            separatorHeight: {
+            size: {
                 if(!model){
                     return 1
                 }
@@ -177,6 +180,11 @@ Item {
                     leftMargin: 6
                     rightMargin: 6
                 }
+                FluTooltip {
+                    text: model.title
+                    visible: item_control.hovered && model.title && d.isCompact
+                    delay: 800
+                }
                 MouseArea{
                     anchors.fill: parent
                     acceptedButtons: Qt.RightButton
@@ -200,7 +208,7 @@ Item {
                         if(h+y>control.height){
                             y = control.height - h
                         }
-                        control_popup.showPopup(Qt.point(50,y),h,model.children)
+                        control_popup.showPopup(Qt.point(control.navCompactWidth,y),h,model.children)
                         return
                     }
                     model.isExpand = !model.isExpand
@@ -240,7 +248,7 @@ Item {
                         width: 3
                         height: 18
                         radius: 1.5
-                        color: FluTheme.primaryColor.dark
+                        color: FluTheme.primaryColor
                         visible: {
                             if(!model){
                                 return false
@@ -292,25 +300,15 @@ Item {
                     }
                     color: {
                         if(!item_control.enabled){
-                            return Qt.rgba(0,0,0,0)
+                            return FluTheme.itemNormalColor
                         }
-                        if(FluTheme.dark){
-                            if((nav_list.currentIndex === _idx)&&type===0){
-                                return Qt.rgba(1,1,1,0.06)
-                            }
-                            if(item_control.hovered){
-                                return Qt.rgba(1,1,1,0.03)
-                            }
-                            return Qt.rgba(0,0,0,0)
-                        }else{
-                            if(nav_list.currentIndex === _idx&&type===0){
-                                return Qt.rgba(0,0,0,0.06)
-                            }
-                            if(item_control.hovered){
-                                return Qt.rgba(0,0,0,0.03)
-                            }
-                            return Qt.rgba(0,0,0,0)
+                        if(nav_list.currentIndex === _idx&&type===0){
+                            return FluTheme.itemCheckColor
                         }
+                        if(item_control.hovered){
+                            return FluTheme.itemHoverColor
+                        }
+                        return FluTheme.itemNormalColor
                     }
                     Component{
                         id:com_icon
@@ -341,11 +339,11 @@ Item {
                             return true
                         }
                         anchors{
-                            verticalCenter: parent.verticalCenter
                             left:parent.left
-                            leftMargin: 3
+                            verticalCenter: parent.verticalCenter
+                            leftMargin: d.isCompactAndNotPanel ? (parent.width - 30)/2 : 3
                         }
-                        Loader{
+                        FluLoader{
                             anchors.centerIn: parent
                             sourceComponent: {
                                 if(model&&model.iconDelegate){
@@ -391,7 +389,7 @@ Item {
                             return FluTheme.dark ? FluColors.White : FluColors.Grey220
                         }
                     }
-                    Loader{
+                    FluLoader{
                         id:item_edit_loader
                         anchors{
                             top: parent.top
@@ -407,7 +405,7 @@ Item {
                             return model&&model.showEdit ? model.editDelegate : undefined
                         }
                         onStatusChanged: {
-                            if(status === Loader.Ready){
+                            if(status === FluLoader.Ready){
                                 item.forceActiveFocus()
                                 item_connection_edit_focus.target = item
                             }
@@ -466,6 +464,11 @@ Item {
                     leftMargin: 6
                     rightMargin: 6
                 }
+                FluTooltip {
+                    text: model.title
+                    visible: item_control.hovered && model.title && d.isCompact
+                    delay: 800
+                }
                 onClicked:{
                     if(type === 0){
                         if(model.onTapListener){
@@ -514,37 +517,21 @@ Item {
                     anchors.fill: parent
                     color: {
                         if(!item_control.enabled){
-                            return Qt.rgba(0,0,0,0)
+                            return FluTheme.itemNormalColor
                         }
-                        if(FluTheme.dark){
-                            if(type===0){
-                                if(nav_list.currentIndex === _idx){
-                                    return Qt.rgba(1,1,1,0.06)
-                                }
-                            }else{
-                                if(nav_list.currentIndex === (nav_list.count-layout_footer.count+_idx)){
-                                    return Qt.rgba(1,1,1,0.06)
-                                }
+                        if(type===0){
+                            if(nav_list.currentIndex === _idx){
+                                return FluTheme.itemCheckColor
                             }
-                            if(item_control.hovered){
-                                return Qt.rgba(1,1,1,0.03)
-                            }
-                            return Qt.rgba(0,0,0,0)
                         }else{
-                            if(type===0){
-                                if(nav_list.currentIndex === _idx){
-                                    return Qt.rgba(0,0,0,0.06)
-                                }
-                            }else{
-                                if(nav_list.currentIndex === (nav_list.count-layout_footer.count+_idx)){
-                                    return Qt.rgba(0,0,0,0.06)
-                                }
+                            if(nav_list.currentIndex === (nav_list.count-layout_footer.count+_idx)){
+                                return FluTheme.itemCheckColor
                             }
-                            if(item_control.hovered){
-                                return Qt.rgba(0,0,0,0.03)
-                            }
-                            return Qt.rgba(0,0,0,0)
                         }
+                        if(item_control.hovered){
+                            return FluTheme.itemHoverColor
+                        }
+                        return FluTheme.itemNormalColor
                     }
                     Component{
                         id:com_icon
@@ -575,11 +562,11 @@ Item {
                             return true
                         }
                         anchors{
-                            verticalCenter: parent.verticalCenter
                             left:parent.left
-                            leftMargin: 3
+                            verticalCenter: parent.verticalCenter
+                            leftMargin: d.isCompactAndNotPanel ? (parent.width - 30)/2 : 3
                         }
-                        Loader{
+                        FluLoader{
                             anchors.centerIn: parent
                             sourceComponent: {
                                 if(model&&model.iconDelegate){
@@ -625,7 +612,7 @@ Item {
                             right: item_dot_loader.left
                         }
                     }
-                    Loader{
+                    FluLoader{
                         id:item_edit_loader
                         anchors{
                             top: parent.top
@@ -644,7 +631,7 @@ Item {
                             return model.showEdit ? model.editDelegate : undefined
                         }
                         onStatusChanged: {
-                            if(status === Loader.Ready){
+                            if(status === FluLoader.Ready){
                                 item.forceActiveFocus()
                                 item_connection_edit_focus.target = item
                             }
@@ -663,7 +650,7 @@ Item {
                             }
                         }
                     }
-                    Loader{
+                    FluLoader{
                         id:item_dot_loader
                         property bool isDot: (item_dot_loader.item&&item_dot_loader.item.isDot)
                         anchors{
@@ -694,11 +681,12 @@ Item {
     Item {
         id:nav_app_bar
         width: parent.width
-        height: 40
+        height: visible ? 40 : 0
         anchors{
             top: parent.top
             topMargin: control.topPadding
         }
+        visible: !control.hideNavAppBar
         z:999
         RowLayout{
             height:parent.height
@@ -807,7 +795,7 @@ Item {
                 }
                 return 0
             }
-            Loader{
+            FluLoader{
                 id:loader_action
                 anchors.centerIn: parent
                 sourceComponent: actionItem
@@ -849,7 +837,7 @@ Item {
             }
         }
     }
-    Loader{
+    FluLoader{
         id:loader_content
         anchors{
             left: parent.left
@@ -861,7 +849,7 @@ Item {
                     return 0
                 }
                 if(d.isCompact){
-                    return 50
+                    return control.navCompactWidth
                 }
                 return control.cellWidth
             }
@@ -889,12 +877,13 @@ Item {
         id:layout_list
         width: {
             if(d.isCompactAndNotPanel){
-                return 50
+                return control.navCompactWidth
             }
             return control.cellWidth
         }
         anchors{
             top: parent.top
+            topMargin: control.navTopMargin
             bottom: parent.bottom
         }
         border.color: FluTheme.dark ? Qt.rgba(45/255,45/255,45/255,1) : Qt.rgba(226/255,230/255,234/255,1)
@@ -935,7 +924,7 @@ Item {
             clip: true
             y:nav_app_bar.height+control.topPadding
             height: autoSuggestBox ? 38 : 0
-            Loader{
+            FluLoader{
                 id:loader_auto_suggest_box
                 sourceComponent: autoSuggestBox
                 anchors{
@@ -954,13 +943,13 @@ Item {
             }
             FluIconButton{
                 visible:d.isCompactAndNotPanel
-                hoverColor: FluTheme.dark ? Qt.rgba(1,1,1,0.03) : Qt.rgba(0,0,0,0.03)
-                pressedColor: FluTheme.dark ? Qt.rgba(1,1,1,0.03) : Qt.rgba(0,0,0,0.03)
-                normalColor: FluTheme.dark ? Qt.rgba(0,0,0,0) : Qt.rgba(0,0,0,0)
-                width:38
-                height:34
-                x:6
-                y:2
+                anchors{
+                    fill: parent
+                    leftMargin: 6
+                    rightMargin: 6
+                    topMargin: 2
+                    bottomMargin: 2
+                }
                 iconSize: 15
                 iconSource: {
                     if(loader_auto_suggest_box.item){
@@ -1005,7 +994,7 @@ Item {
                     Rectangle{
                         height: 18
                         radius: 1.5
-                        color: FluTheme.primaryColor.dark
+                        color: FluTheme.primaryColor
                         width: 3
                         anchors{
                             verticalCenter: parent.verticalCenter
@@ -1015,7 +1004,7 @@ Item {
                     }
                 }
                 currentIndex: -1
-                delegate: Loader{
+                delegate: FluLoader{
                     property var model: modelData
                     property var _idx: index
                     property int type: 0
@@ -1063,7 +1052,7 @@ Item {
                 Rectangle{
                     height: 18
                     radius: 1.5
-                    color: FluTheme.primaryColor.dark
+                    color: FluTheme.primaryColor
                     width: 3
                     anchors{
                         verticalCenter: parent.verticalCenter
@@ -1072,7 +1061,7 @@ Item {
                     }
                 }
             }
-            delegate: Loader{
+            delegate: FluLoader{
                 property var model: modelData
                 property var _idx: index
                 property int type: 1
@@ -1127,24 +1116,17 @@ Item {
                     focusPolicy:Qt.TabFocus
                     background: Rectangle{
                         color:  {
-                            if(FluTheme.dark){
-                                if(item_button.hovered){
-                                    return Qt.rgba(1,1,1,0.06)
-                                }
-                                return Qt.rgba(0,0,0,0)
-                            }else{
-                                if(item_button.hovered){
-                                    return Qt.rgba(0,0,0,0.03)
-                                }
-                                return Qt.rgba(0,0,0,0)
+                            if(item_button.hovered){
+                                return FluTheme.itemHoverColor
                             }
+                            return FluTheme.itemNormalColor
                         }
                         FluFocusRectangle{
                             visible: item_button.activeFocus
                             radius:4
                         }
 
-                        Loader{
+                        FluLoader{
                             id:item_dot_loader
                             anchors{
                                 right: parent.right
@@ -1201,7 +1183,7 @@ Item {
             control_popup.open()
         }
     }
-    Loader{
+    FluLoader{
         property var modelData
         id:loader_item_menu
     }

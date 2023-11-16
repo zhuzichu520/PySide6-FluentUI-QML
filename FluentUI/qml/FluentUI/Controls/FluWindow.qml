@@ -13,16 +13,20 @@ Window {
     property bool fixSize: false
     property Component loadingItem: com_loading
     property var appBar: com_app_bar
-    flags: Qt.Window | Qt.CustomizeWindowHint | Qt.WindowTitleHint | Qt.WindowSystemMenuHint | Qt.WindowMinMaxButtonsHint | Qt.WindowCloseButtonHint
     property color backgroundColor: {
         if(active){
-            return FluTheme.dark ? Qt.rgba(26/255,34/255,40/255,1) : Qt.rgba(243/255,243/255,243/255,1)
+            return FluTheme.windowActiveBackgroundColor
         }
-        return FluTheme.dark ? Qt.rgba(32/255,32/255,32/255,1) : Qt.rgba(237/255,237/255,237/255,1)
+        return FluTheme.windowBackgroundColor
     }
     property bool stayTop: false
     property var _pageRegister
     property string _route
+    property bool showDark: false
+    property bool showClose: true
+    property bool showMinimize: true
+    property bool showMaximize: true
+    property bool showStayTop: true
     property var closeListener: function(event){
         if(closeDestory){
             destoryOnClose()
@@ -48,19 +52,23 @@ Window {
     onVisibleChanged: {
         lifecycle.onVisible(visible)
     }
-    onVisibilityChanged: {
-        console.debug(visibility)
-    }
     QtObject{
         id:d
         function changedStayTop(){
-            var visibility = window.visibility
-            if(window.stayTop){
-                window.flags = window.flags | Qt.WindowStaysOnTopHint
-            }else{
-                window.flags = window.flags &~ Qt.WindowStaysOnTopHint
+            function toggleStayTop(){
+                if(window.stayTop){
+                    window.flags = window.flags | Qt.WindowStaysOnTopHint
+                }else{
+                    window.flags = window.flags &~ Qt.WindowStaysOnTopHint
+                }
             }
-            window.visibility = visibility
+            if(window.visibility === Window.Maximized){
+                window.visibility = Window.Windowed
+                toggleStayTop()
+                window.visibility = Window.Maximized
+            }else{
+                toggleStayTop()
+            }
         }
     }
     Connections{
@@ -77,13 +85,18 @@ Window {
         id:com_app_bar
         FluAppBar {
             title: window.title
+            showDark: window.showDark
+            showClose: window.showClose
+            showMinimize: window.showMinimize
+            showMaximize: window.showMaximize
+            showStayTop: window.showStayTop
         }
     }
-    Loader{
+    FluLoader{
         anchors.fill: parent
         sourceComponent: background
     }
-    Loader{
+    FluLoader{
         id: loader_title_bar
         anchors {
             top: parent.top
@@ -102,7 +115,7 @@ Window {
         }
         clip: true
     }
-    Loader{
+    FluLoader{
         property string loadingText: "加载中..."
         property bool cancel: false
         id:loader_loading
@@ -186,6 +199,7 @@ Window {
     FramelessHelper{
         id:framless_helper
         onReady: {
+            flags = flags | Qt.Window | Qt.CustomizeWindowHint | Qt.WindowTitleHint | Qt.WindowSystemMenuHint | Qt.WindowMinMaxButtonsHint | Qt.WindowCloseButtonHint
             if(appBar){
                 var title_bar = loader_title_bar.item
                 setTitleBarItem(title_bar)
@@ -207,6 +221,19 @@ Window {
     }
     WindowBorder{
         z:999
+        visible: !FluTools.isLinux()
+    }
+    Rectangle{
+        anchors.fill: parent
+        color: "#00000000"
+        border.width: 1
+        visible: FluTools.isLinux()
+        border.color: {
+            if(window.active){
+                return "#333333"
+            }
+            return "#999999"
+        }
     }
     function destoryOnClose(){
         lifecycle.onDestoryOnClose()

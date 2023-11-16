@@ -11,10 +11,10 @@ Button {
     property bool disabled: false
     property int radius:4
     property string contentDescription: ""
-    property color hoverColor: FluTheme.dark ? Qt.rgba(1,1,1,0.03) : Qt.rgba(0,0,0,0.03)
-    property color pressedColor: FluTheme.dark ? Qt.rgba(1,1,1,0.06) : Qt.rgba(0,0,0,0.06)
-    property color normalColor: FluTheme.dark ? Qt.rgba(0,0,0,0) : Qt.rgba(0,0,0,0)
-    property color disableColor: FluTheme.dark ? Qt.rgba(0,0,0,0) : Qt.rgba(0,0,0,0)
+    property color hoverColor: FluTheme.itemHoverColor
+    property color pressedColor: FluTheme.itemPressColor
+    property color normalColor: FluTheme.itemNormalColor
+    property color disableColor: FluTheme.itemNormalColor
     property Component iconDelegate: com_icon
     property color color: {
         if(!enabled){
@@ -38,6 +38,7 @@ Button {
             return Qt.rgba(0,0,0,1)
         }
     }
+    property color textColor: FluTheme.fontPrimaryColor
     Accessible.role: Accessible.Button
     Accessible.name: control.text
     Accessible.description: contentDescription
@@ -48,6 +49,7 @@ Button {
     verticalPadding: 8
     horizontalPadding: 8
     enabled: !disabled
+    font:FluTextStyle.Caption
     background: Rectangle{
         implicitWidth: 30
         implicitHeight: 30
@@ -72,7 +74,7 @@ Button {
     Component{
         id:com_row
         RowLayout{
-            Loader{
+            FluLoader{
                 sourceComponent: iconDelegate
                 Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
                 visible: display !== Button.TextOnly
@@ -81,13 +83,15 @@ Button {
                 text:control.text
                 Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
                 visible: display !== Button.IconOnly
+                color: control.textColor
+                font: control.font
             }
         }
     }
     Component{
         id:com_column
         ColumnLayout{
-            Loader{
+            FluLoader{
                 sourceComponent: iconDelegate
                 Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
                 visible: display !== Button.TextOnly
@@ -96,10 +100,12 @@ Button {
                 text:control.text
                 Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
                 visible: display !== Button.IconOnly
+                color: control.textColor
+                font: control.font
             }
         }
     }
-    contentItem:Loader{
+    contentItem:FluLoader{
         sourceComponent: {
             if(display === Button.TextUnderIcon){
                 return com_column

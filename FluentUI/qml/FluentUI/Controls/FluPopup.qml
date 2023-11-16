@@ -12,13 +12,6 @@ Popup {
     closePolicy: Popup.CloseOnEscape
     enter: Transition {
         NumberAnimation {
-            properties: "scale"
-            from:1.2
-            to:1
-            duration: FluTheme.enableAnimation ? 83 : 0
-            easing.type: Easing.OutCubic
-        }
-        NumberAnimation {
             property: "opacity"
             duration: FluTheme.enableAnimation ? 83 : 0
             from:0
@@ -26,13 +19,6 @@ Popup {
         }
     }
     exit:Transition {
-        NumberAnimation {
-            properties: "scale"
-            from:1
-            to:1.2
-            duration: FluTheme.enableAnimation ? 83 : 0
-            easing.type: Easing.OutCubic
-        }
         NumberAnimation {
             property: "opacity"
             duration: FluTheme.enableAnimation ? 83 : 0
@@ -43,5 +29,8 @@ Popup {
     background: FluRectangle{
         radius: [5,5,5,5]
         color: FluTheme.dark ? Qt.rgba(43/255,43/255,43/255,1) : Qt.rgba(1,1,1,1)
+        FluShadow{
+            radius: 5
+        }
     }
 }

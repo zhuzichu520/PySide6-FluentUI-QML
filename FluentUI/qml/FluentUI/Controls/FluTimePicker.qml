@@ -184,11 +184,7 @@ Rectangle {
                                 anchors.rightMargin: 5
                                 color:  {
                                     if(getListView().currentIndex === position){
-                                        if(FluTheme.dark){
-                                            return  item_mouse.containsMouse ? Qt.darker(FluTheme.primaryColor.lighter,1.1) : FluTheme.primaryColor.lighter
-                                        }else{
-                                            return  item_mouse.containsMouse ? Qt.lighter(FluTheme.primaryColor.dark,1.1): FluTheme.primaryColor.dark
-                                        }
+                                        return  item_mouse.containsMouse ? Qt.darker(FluTheme.primaryColor,1.1) : FluTheme.primaryColor
                                     }
                                     if(item_mouse.containsMouse){
                                         return FluTheme.dark ? Qt.rgba(63/255,60/255,61/255,1) : Qt.rgba(237/255,237/255,242/255,1)
@@ -242,7 +238,7 @@ Rectangle {
                         highlightMoveDuration: 0
                         model: isH ? generateArray(1,12) : generateArray(0,23)
                         clip: true
-                        delegate: Loader{
+                        delegate: FluLoader{
                             property var model: modelData
                             property int type:0
                             property int position:index
@@ -265,7 +261,7 @@ Rectangle {
                         highlightMoveDuration: 0
                         ScrollBar.vertical: FluScrollBar {}
                         boundsBehavior:Flickable.StopAtBounds
-                        delegate: Loader{
+                        delegate: FluLoader{
                             property var model: modelData
                             property int type:1
                             property int position:index
@@ -291,7 +287,7 @@ Rectangle {
                         ScrollBar.vertical: FluScrollBar {}
                         Layout.alignment: Qt.AlignVCenter
                         boundsBehavior:Flickable.StopAtBounds
-                        delegate: Loader{
+                        delegate: FluLoader{
                             property var model: modelData
                             property int type:2
                             property int position:index

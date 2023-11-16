@@ -26,7 +26,7 @@ TextField{
     leftPadding: padding+4
     echoMode:btn_reveal.pressed ? TextField.Normal : TextField.Password
     renderType: FluTheme.nativeText ? Text.NativeRendering : Text.QtRendering
-    selectionColor: FluTools.colorAlpha(FluTheme.primaryColor.lightest,0.6)
+    selectionColor: FluTools.colorAlpha(FluTheme.primaryColor,0.5)
     selectedTextColor: color
     placeholderTextColor: {
         if(!enabled){
@@ -38,9 +38,9 @@ TextField{
         return placeholderNormalColor
     }
     selectByMouse: true
+    width: 240
     background: FluTextBoxBackground{
         inputItem: control
-        implicitWidth: 240
     }
     Keys.onEnterPressed: (event)=> d.handleCommit(event)
     Keys.onReturnPressed:(event)=> d.handleCommit(event)

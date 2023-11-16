@@ -42,6 +42,7 @@ FluIconButton 1.0 Controls/FluIconButton.qml
 FluImage 1.0 Controls/FluImage.qml
 FluInfoBar 1.0 Controls/FluInfoBar.qml
 FluItemDelegate 1.0 Controls/FluItemDelegate.qml
+FluLoader 1.0 Controls/FluLoader.qml
 FluLoadingButton 1.0 Controls/FluLoadingButton.qml
 FluMenu 1.0 Controls/FluMenu.qml
 FluMenuBar 1.0 Controls/FluMenuBar.qml

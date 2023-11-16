@@ -22,7 +22,7 @@ Item {
         property int dropIndex: -1
         property bool isDropTopArea: false
         property int dragIndex: -1
-        property color hitColor: FluTheme.dark ? FluTheme.primaryColor.lighter : FluTheme.primaryColor.dark
+        property color hitColor: FluTheme.primaryColor
     }
     onDataSourceChanged: {
         tree_model.setDataSource(dataSource)
@@ -86,7 +86,7 @@ Item {
             ListView.onPooled: {
                 item_loader_container.item.pooled()
             }
-            Loader{
+            FluLoader{
                 property var itemControl: item_control
                 property var itemModel: dataModel
                 property int rowIndex: index
@@ -95,7 +95,7 @@ Item {
                 sourceComponent: com_item_container
             }
         }
-        Loader{
+        FluLoader{
             id:loader_container
             property var itemControl
             property var itemModel
@@ -138,7 +138,7 @@ Item {
                 width: 3
                 height: 18
                 radius: 1.5
-                color: FluTheme.primaryColor.dark
+                color: FluTheme.primaryColor
                 visible: isCurrent
                 anchors{
                     left: parent.left
@@ -322,29 +322,16 @@ Item {
                 border.color: d.hitColor
                 border.width: d.dragIndex === rowIndex ? 1 : 0
                 color: {
-                    if(FluTheme.dark){
-                        if(isCurrent){
-                            return Qt.rgba(1,1,1,0.06)
-                        }
-                        if(item_mouse.containsMouse || item_check_box.hovered){
-                            return Qt.rgba(1,1,1,0.03)
-                        }
-                        if(item_loader_expand.item && item_loader_expand.item.hovered){
-                            return Qt.rgba(1,1,1,0.03)
-                        }
-                        return Qt.rgba(0,0,0,0)
-                    }else{
-                        if(isCurrent){
-                            return Qt.rgba(0,0,0,0.06)
-                        }
-                        if(item_mouse.containsMouse || item_check_box.hovered){
-                            return Qt.rgba(0,0,0,0.03)
-                        }
-                        if(item_loader_expand.item && item_loader_expand.item.hovered){
-                            return Qt.rgba(0,0,0,0.03)
-                        }
-                        return Qt.rgba(0,0,0,0)
+                    if(isCurrent){
+                        return FluTheme.itemCheckColor
                     }
+                    if(item_mouse.containsMouse || item_check_box.hovered){
+                        return FluTheme.itemHoverColor
+                    }
+                    if(item_loader_expand.item && item_loader_expand.item.hovered){
+                        return FluTheme.itemHoverColor
+                    }
+                    return FluTheme.itemNormalColor
                 }
             }
             RowLayout{
@@ -370,7 +357,7 @@ Item {
                     }
                 }
 
-                Loader{
+                FluLoader{
                     id:item_loader_expand
                     Layout.preferredWidth: 20
                     Layout.preferredHeight: 20
@@ -394,7 +381,7 @@ Item {
                     }
                     Layout.alignment: Qt.AlignVCenter
                 }
-                Loader{
+                FluLoader{
                     property var dataModel: itemModel
                     property var itemMouse: item_mouse
                     id:item_loader_cell

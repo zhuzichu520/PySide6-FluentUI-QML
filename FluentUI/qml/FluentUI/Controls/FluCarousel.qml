@@ -75,7 +75,7 @@ Item {
                     return 0
                 return index-1
             }
-            Loader{
+            FluLoader{
                 property int displayIndex : item_control.displayIndex
                 property var model: list_view.model.get(index)
                 anchors.fill: parent
@@ -124,9 +124,9 @@ Item {
                 radius: 4
             }
             scale: checked ? 1.2 : 1
-            color: checked ?  FluTheme.primaryColor.dark : Qt.rgba(1,1,1,0.7)
+            color: checked ?  FluTheme.primaryColor : Qt.rgba(1,1,1,0.7)
             border.width: mouse_item.containsMouse ? 1 : 0
-            border.color: FluTheme.primaryColor.dark
+            border.color: FluTheme.primaryColor
             MouseArea{
                 id:mouse_item
                 hoverEnabled: true
@@ -156,7 +156,7 @@ Item {
         Repeater{
             id:repeater_indicator
             model: list_view.count
-            Loader{
+            FluLoader{
                 property int displayIndex: {
                     if(index === 0)
                         return list_view.count-3

@@ -65,7 +65,7 @@ Item {
                     height: 50
                     radius: 25
                     visible: isYear
-                    color: FluTheme.primaryColor.dark
+                    color: FluTheme.primaryColor
                 }
                 FluText{
                     text:date.getFullYear()
@@ -124,7 +124,7 @@ Item {
                     height: 50
                     radius: 25
                     visible: isMonth
-                    color: FluTheme.primaryColor.dark
+                    color: FluTheme.primaryColor
                 }
                 FluText{
                     text:(date.getMonth()+1)+"月"
@@ -184,7 +184,7 @@ Item {
                     radius: 18
                     color:"#00000000"
                     visible: isDay
-                    border.color: FluTheme.primaryColor.dark
+                    border.color: FluTheme.primaryColor
                     border.width: 1
                 }
                 Rectangle{
@@ -194,7 +194,7 @@ Item {
                     height: 30
                     radius: 15
                     visible: isToDay
-                    color: FluTheme.primaryColor.dark
+                    color: FluTheme.primaryColor
                 }
                 FluText{
                     text:date.getDate()
@@ -331,7 +331,7 @@ Item {
                 cellWidth: displayMode === FluCalendarViewType.Month ? 40 : 70
                 clip: true
                 boundsBehavior:Flickable.StopAtBounds
-                delegate: Loader{
+                delegate: FluLoader{
                     property var modelData : model
                     property var name : model.name
                     property var date : model.date
