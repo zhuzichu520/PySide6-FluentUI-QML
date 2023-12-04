@@ -18,17 +18,11 @@ Module {
         Property { name: "vsync"; type: "bool"; notify: "vsyncChanged"; index: 0 }
         Property { name: "initialRoute"; type: "QString"; notify: "initialRouteChanged"; index: 1 }
         Property { name: "routes"; type: "QJsonObject"; notify: "routesChanged"; index: 2 }
-        Property {
-            name: "httpInterceptor"
-            type: "FluHttpInterceptor"
-            isPointer: true
-            notify: "httpInterceptorChanged"
-            index: 3
-        }
+        Property { name: "useSystemAppBar"; type: "bool"; notify: "useSystemAppBarChanged"; index: 3 }
         Signal { name: "vsyncChanged" }
         Signal { name: "initialRouteChanged" }
         Signal { name: "routesChanged" }
-        Signal { name: "httpInterceptorChanged" }
+        Signal { name: "useSystemAppBarChanged" }
         Method { name: "run" }
         Method {
             name: "navigate"
@@ -242,102 +236,6 @@ Module {
         }
     }
     Component {
-        file: "FluHttp.h"
-        name: "FluHttp"
-        accessSemantics: "reference"
-        prototype: "QObject"
-        exports: ["FluentUI/FluHttp 1.0"]
-        exportMetaObjectRevisions: [256]
-        Property { name: "retry"; type: "int"; notify: "retryChanged"; index: 0 }
-        Property { name: "timeout"; type: "int"; notify: "timeoutChanged"; index: 1 }
-        Property { name: "cacheMode"; type: "int"; notify: "cacheModeChanged"; index: 2 }
-        Property { name: "cacheDir"; type: "QString"; notify: "cacheDirChanged"; index: 3 }
-        Property {
-            name: "breakPointDownload"
-            type: "bool"
-            notify: "breakPointDownloadChanged"
-            index: 4
-        }
-        Signal { name: "retryChanged" }
-        Signal { name: "timeoutChanged" }
-        Signal { name: "cacheModeChanged" }
-        Signal { name: "cacheDirChanged" }
-        Signal { name: "breakPointDownloadChanged" }
-        Method {
-            name: "newRequest"
-            type: "HttpRequest"
-            isPointer: true
-            Parameter { name: "url"; type: "QString" }
-        }
-        Method { name: "newRequest"; type: "HttpRequest"; isPointer: true; isCloned: true }
-        Method {
-            name: "get"
-            Parameter { name: "request"; type: "HttpRequest"; isPointer: true }
-            Parameter { name: "callable"; type: "HttpCallable"; isPointer: true }
-        }
-        Method {
-            name: "post"
-            Parameter { name: "request"; type: "HttpRequest"; isPointer: true }
-            Parameter { name: "callable"; type: "HttpCallable"; isPointer: true }
-        }
-        Method {
-            name: "postString"
-            Parameter { name: "request"; type: "HttpRequest"; isPointer: true }
-            Parameter { name: "callable"; type: "HttpCallable"; isPointer: true }
-        }
-        Method {
-            name: "postJson"
-            Parameter { name: "request"; type: "HttpRequest"; isPointer: true }
-            Parameter { name: "callable"; type: "HttpCallable"; isPointer: true }
-        }
-        Method {
-            name: "download"
-            Parameter { name: "request"; type: "HttpRequest"; isPointer: true }
-            Parameter { name: "callable"; type: "HttpCallable"; isPointer: true }
-        }
-        Method {
-            name: "upload"
-            Parameter { name: "request"; type: "HttpRequest"; isPointer: true }
-            Parameter { name: "callable"; type: "HttpCallable"; isPointer: true }
-        }
-        Method {
-            name: "deleteResource"
-            Parameter { name: "request"; type: "HttpRequest"; isPointer: true }
-            Parameter { name: "callable"; type: "HttpCallable"; isPointer: true }
-        }
-        Method {
-            name: "getBreakPointProgress"
-            type: "double"
-            Parameter { name: "request"; type: "HttpRequest"; isPointer: true }
-        }
-        Method { name: "cancel" }
-    }
-    Component {
-        file: "FluHttpInterceptor.h"
-        name: "FluHttpInterceptor"
-        accessSemantics: "reference"
-        prototype: "QObject"
-        exports: ["FluentUI/FluHttpInterceptor 1.0"]
-        exportMetaObjectRevisions: [256]
-    }
-    Component {
-        file: "Def.h"
-        name: "FluHttpType"
-        accessSemantics: "none"
-        exports: ["FluentUI/FluHttpType 1.0"]
-        isCreatable: false
-        exportMetaObjectRevisions: [256]
-        Enum {
-            name: "CacheMode"
-            values: [
-                "NoCache",
-                "RequestFailedReadCache",
-                "IfNoneCacheRequest",
-                "FirstCacheThenRequest"
-            ]
-        }
-    }
-    Component {
         file: "Def.h"
         name: "FluNavigationViewType"
         accessSemantics: "none"
@@ -351,6 +249,151 @@ Module {
         Enum {
             name: "PageMode"
             values: ["Stack", "NoStack"]
+        }
+    }
+    Component {
+        file: "FluNetwork.h"
+        name: "FluNetwork"
+        accessSemantics: "reference"
+        prototype: "QObject"
+        exports: ["FluentUI/FluNetwork 1.0"]
+        isCreatable: false
+        isSingleton: true
+        exportMetaObjectRevisions: [256]
+        Property { name: "timeout"; type: "int"; notify: "timeoutChanged"; index: 0 }
+        Property { name: "retry"; type: "int"; notify: "retryChanged"; index: 1 }
+        Property { name: "cacheDir"; type: "QString"; notify: "cacheDirChanged"; index: 2 }
+        Signal { name: "timeoutChanged" }
+        Signal { name: "retryChanged" }
+        Signal { name: "cacheDirChanged" }
+        Method {
+            name: "get"
+            type: "NetworkParams"
+            isPointer: true
+            Parameter { name: "url"; type: "QString" }
+        }
+        Method {
+            name: "head"
+            type: "NetworkParams"
+            isPointer: true
+            Parameter { name: "url"; type: "QString" }
+        }
+        Method {
+            name: "postBody"
+            type: "NetworkParams"
+            isPointer: true
+            Parameter { name: "url"; type: "QString" }
+        }
+        Method {
+            name: "putBody"
+            type: "NetworkParams"
+            isPointer: true
+            Parameter { name: "url"; type: "QString" }
+        }
+        Method {
+            name: "patchBody"
+            type: "NetworkParams"
+            isPointer: true
+            Parameter { name: "url"; type: "QString" }
+        }
+        Method {
+            name: "deleteBody"
+            type: "NetworkParams"
+            isPointer: true
+            Parameter { name: "url"; type: "QString" }
+        }
+        Method {
+            name: "postForm"
+            type: "NetworkParams"
+            isPointer: true
+            Parameter { name: "url"; type: "QString" }
+        }
+        Method {
+            name: "putForm"
+            type: "NetworkParams"
+            isPointer: true
+            Parameter { name: "url"; type: "QString" }
+        }
+        Method {
+            name: "patchForm"
+            type: "NetworkParams"
+            isPointer: true
+            Parameter { name: "url"; type: "QString" }
+        }
+        Method {
+            name: "deleteForm"
+            type: "NetworkParams"
+            isPointer: true
+            Parameter { name: "url"; type: "QString" }
+        }
+        Method {
+            name: "postJson"
+            type: "NetworkParams"
+            isPointer: true
+            Parameter { name: "url"; type: "QString" }
+        }
+        Method {
+            name: "putJson"
+            type: "NetworkParams"
+            isPointer: true
+            Parameter { name: "url"; type: "QString" }
+        }
+        Method {
+            name: "patchJson"
+            type: "NetworkParams"
+            isPointer: true
+            Parameter { name: "url"; type: "QString" }
+        }
+        Method {
+            name: "deleteJson"
+            type: "NetworkParams"
+            isPointer: true
+            Parameter { name: "url"; type: "QString" }
+        }
+        Method {
+            name: "postJsonArray"
+            type: "NetworkParams"
+            isPointer: true
+            Parameter { name: "url"; type: "QString" }
+        }
+        Method {
+            name: "putJsonArray"
+            type: "NetworkParams"
+            isPointer: true
+            Parameter { name: "url"; type: "QString" }
+        }
+        Method {
+            name: "patchJsonArray"
+            type: "NetworkParams"
+            isPointer: true
+            Parameter { name: "url"; type: "QString" }
+        }
+        Method {
+            name: "deleteJsonArray"
+            type: "NetworkParams"
+            isPointer: true
+            Parameter { name: "url"; type: "QString" }
+        }
+        Method {
+            name: "setInterceptor"
+            Parameter { name: "interceptor"; type: "QJSValue" }
+        }
+    }
+    Component {
+        file: "Def.h"
+        name: "FluNetworkType"
+        accessSemantics: "none"
+        exports: ["FluentUI/FluNetworkType 1.0"]
+        isCreatable: false
+        exportMetaObjectRevisions: [256]
+        Enum {
+            name: "CacheMode"
+            values: [
+                "NoCache",
+                "RequestFailedReadCache",
+                "IfNoneCacheRequest",
+                "FirstCacheThenRequest"
+            ]
         }
     }
     Component {
@@ -2223,11 +2266,11 @@ Module {
         }
     }
     Component {
-        file: "FluHttp.h"
-        name: "HttpCallable"
+        file: "FluNetwork.h"
+        name: "NetworkCallable"
         accessSemantics: "reference"
         prototype: "QObject"
-        exports: ["FluentUI/HttpCallable 1.0"]
+        exports: ["FluentUI/FluNetworkCallable 1.0"]
         exportMetaObjectRevisions: [256]
         Signal { name: "start" }
         Signal { name: "finish" }
@@ -2246,39 +2289,99 @@ Module {
             Parameter { name: "result"; type: "QString" }
         }
         Signal {
-            name: "downloadProgress"
-            Parameter { name: "recv"; type: "qlonglong" }
-            Parameter { name: "total"; type: "qlonglong" }
-        }
-        Signal {
             name: "uploadProgress"
             Parameter { name: "sent"; type: "qlonglong" }
             Parameter { name: "total"; type: "qlonglong" }
         }
+        Signal {
+            name: "downloadProgress"
+            Parameter { name: "recv"; type: "qlonglong" }
+            Parameter { name: "total"; type: "qlonglong" }
+        }
     }
     Component {
-        file: "FluHttp.h"
-        name: "HttpRequest"
+        file: "FluNetwork.h"
+        name: "NetworkParams"
         accessSemantics: "reference"
         prototype: "QObject"
-        exports: ["FluentUI/HttpRequest 1.0"]
+        exports: ["FluentUI/FluNetworkParams 1.0"]
         exportMetaObjectRevisions: [256]
-        Property { name: "url"; type: "QString"; notify: "urlChanged"; index: 0 }
-        Property { name: "params"; type: "QVariant"; notify: "paramsChanged"; index: 1 }
-        Property { name: "headers"; type: "QVariant"; notify: "headersChanged"; index: 2 }
-        Property { name: "method"; type: "QString"; notify: "methodChanged"; index: 3 }
-        Property {
-            name: "downloadSavePath"
-            type: "QString"
-            notify: "downloadSavePathChanged"
-            index: 4
+        Method {
+            name: "addQuery"
+            type: "NetworkParams"
+            isPointer: true
+            Parameter { name: "key"; type: "QString" }
+            Parameter { name: "val"; type: "QVariant" }
         }
-        Signal { name: "urlChanged" }
-        Signal { name: "paramsChanged" }
-        Signal { name: "headersChanged" }
-        Signal { name: "methodChanged" }
-        Signal { name: "downloadSavePathChanged" }
-        Method { name: "httpId"; type: "QString" }
+        Method {
+            name: "addHeader"
+            type: "NetworkParams"
+            isPointer: true
+            Parameter { name: "key"; type: "QString" }
+            Parameter { name: "val"; type: "QVariant" }
+        }
+        Method {
+            name: "add"
+            type: "NetworkParams"
+            isPointer: true
+            Parameter { name: "key"; type: "QString" }
+            Parameter { name: "val"; type: "QVariant" }
+        }
+        Method {
+            name: "addFile"
+            type: "NetworkParams"
+            isPointer: true
+            Parameter { name: "key"; type: "QString" }
+            Parameter { name: "val"; type: "QVariant" }
+        }
+        Method {
+            name: "setBody"
+            type: "NetworkParams"
+            isPointer: true
+            Parameter { name: "val"; type: "QString" }
+        }
+        Method {
+            name: "setTimeout"
+            type: "NetworkParams"
+            isPointer: true
+            Parameter { name: "val"; type: "int" }
+        }
+        Method {
+            name: "setRetry"
+            type: "NetworkParams"
+            isPointer: true
+            Parameter { name: "val"; type: "int" }
+        }
+        Method {
+            name: "setCacheMode"
+            type: "NetworkParams"
+            isPointer: true
+            Parameter { name: "val"; type: "int" }
+        }
+        Method {
+            name: "toDownload"
+            type: "NetworkParams"
+            isPointer: true
+            Parameter { name: "destPath"; type: "QString" }
+            Parameter { name: "append"; type: "bool" }
+        }
+        Method {
+            name: "toDownload"
+            type: "NetworkParams"
+            isPointer: true
+            isCloned: true
+            Parameter { name: "destPath"; type: "QString" }
+        }
+        Method {
+            name: "bind"
+            type: "NetworkParams"
+            isPointer: true
+            Parameter { name: "target"; type: "QObject"; isPointer: true }
+        }
+        Method {
+            name: "go"
+            Parameter { name: "result"; type: "NetworkCallable"; isPointer: true }
+        }
     }
     Component {
         file: "QRCode.h"

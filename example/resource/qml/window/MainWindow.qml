@@ -18,7 +18,16 @@ FluWindow {
     minimumWidth: 520
     minimumHeight: 200
     launchMode: FluWindowType.SingleTask
-    appBar: undefined
+    fitsAppBarWindows: true
+    appBar: FluAppBar {
+        width: window.width
+        height: 30
+        darkText: Lang.dark_mode
+        showDark: true
+        darkClickListener:(button)=>handleDarkChanged(button)
+        closeClickListener: ()=>{dialog_close.open()}
+        z:7
+    }
 
     SettingsViewModel{
         id:viewmodel_settings
@@ -32,8 +41,11 @@ FluWindow {
         }
     }
 
-    Component.onCompleted: {
+    onFirstVisible: {
         tour.open()
+    }
+
+    Component.onCompleted: {
         checkUpdate(true)
         FluEventBus.registerEvent(event_checkupdate)
     }
@@ -65,15 +77,23 @@ FluWindow {
             }
     }
 
+    Timer{
+        id:timer_window_hide_delay
+        interval: 150
+        onTriggered: {
+            window.hide()
+        }
+    }
+
     FluContentDialog{
         id:dialog_close
         title:"退出"
         message:"确定要退出程序吗？"
         negativeText:"最小化"
         buttonFlags: FluContentDialogType.NegativeButton | FluContentDialogType.NeutralButton | FluContentDialogType.PositiveButton
-        onNegativeClicked:{
-            window.hide()
+        onNegativeClicked: {
             system_tray.showMessage("友情提示","FluentUI已隐藏至托盘,点击托盘可再次激活窗口");
+            timer_window_hide_delay.restart()
         }
         positiveText:"退出"
         neutralText:"取消"
@@ -120,19 +140,8 @@ FluWindow {
         back: Item{
             anchors.fill: flipable
             visible: flipable.flipAngle !== 0
-            FluAppBar {
-                anchors {
-                    top: parent.top
-                    left: parent.left
-                    right: parent.right
-                }
-                darkText: Lang.dark_mode
-                showDark: true
-                z:7
-                darkClickListener:(button)=>handleDarkChanged(button)
-                closeClickListener: ()=>{dialog_close.open()}
-            }
             Row{
+                id:layout_back_buttons
                 z:8
                 anchors{
                     top: parent.top
@@ -163,26 +172,13 @@ FluWindow {
                 id:loader
                 lazy: true
                 anchors.fill: parent
-                source: "https://zhu-zichu.gitee.io/Qt5_156_LieflatPage.qml"
+                source: "https://zhu-zichu.gitee.io/Qt_163_LieflatPage.qml"
             }
         }
         front: Item{
             id:page_front
             visible: flipable.flipAngle !== 180
             anchors.fill: flipable
-            FluAppBar {
-                id:app_bar_front
-                anchors {
-                    top: parent.top
-                    left: parent.left
-                    right: parent.right
-                }
-                darkText: Lang.dark_mode
-                showDark: true
-                darkClickListener:(button)=>handleDarkChanged(button)
-                closeClickListener: ()=>{dialog_close.open()}
-                z:7
-            }
             FluNavigationView{
                 property int clickCount: 0
                 id:nav_view
@@ -254,7 +250,7 @@ FluWindow {
     }
 
     function handleDarkChanged(button){
-        if(!FluTheme.enableAnimation){
+        if(!FluTheme.enableAnimation || window.fitsAppBarWindows === false){
             changeDark()
         }else{
             loader_reveal.sourceComponent = com_reveal
@@ -296,14 +292,14 @@ FluWindow {
 
     FluTour{
         id:tour
-        steps:[
-            {title:"夜间模式",description: "这里可以切换夜间模式.",target:()=>app_bar_front.darkButton()},
-            {title:"隐藏彩蛋",description: "多点几下试试！！",target:()=>nav_view.logoButton()}
-        ]
-    }
-
-    FluHttp{
-        id:http
+        steps:{
+            var data = []
+            if(!window.useSystemAppBar){
+                data.push({title:"夜间模式",description: "这里可以切换夜间模式.",target:()=>appBar.darkButton()})
+            }
+            data.push({title:"隐藏彩蛋",description: "多点几下试试！！",target:()=>nav_view.logoButton()})
+            return data
+        }
     }
 
     FpsItem{
@@ -335,7 +331,7 @@ FluWindow {
         }
     }
 
-    HttpCallable{
+    FluNetworkCallable{
         id:callable
         property bool silent: true
         onStart: {
@@ -371,8 +367,8 @@ FluWindow {
 
     function checkUpdate(silent){
         callable.silent = silent
-        var request = http.newRequest("https://api.github.com/repos/zhuzichu520/FluentUI/releases/latest")
-        http.get(request,callable);
+        FluNetwork.get("https://api.github.com/repos/zhuzichu520/FluentUI/releases/latest")
+        .go(callable)
     }
 
 }

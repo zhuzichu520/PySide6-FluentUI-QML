@@ -77,6 +77,7 @@ FluScrollBar 1.0 Controls/FluScrollBar.qml
 FluScrollIndicator 1.0 Controls/FluScrollIndicator.qml
 FluScrollablePage 1.0 Controls/FluScrollablePage.qml
 FluShadow 1.0 Controls/FluShadow.qml
+FluShortcutPicker 1.0 Controls/FluShortcutPicker.qml
 FluSlider 1.0 Controls/FluSlider.qml
 FluSpinBox 1.0 Controls/FluSpinBox.qml
 FluStaggeredView 1.0 Controls/FluStaggeredView.qml

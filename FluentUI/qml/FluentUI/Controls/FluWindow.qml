@@ -12,7 +12,17 @@ Window {
     property var background : com_background
     property bool fixSize: false
     property Component loadingItem: com_loading
-    property var appBar: com_app_bar
+    property bool fitsAppBarWindows: false
+    property Item appBar: FluAppBar {
+        title: window.title
+        width: window.width
+        height: 30
+        showDark: window.showDark
+        showClose: window.showClose
+        showMinimize: window.showMinimize
+        showMaximize: window.showMaximize
+        showStayTop: window.showStayTop
+    }
     property color backgroundColor: {
         if(active){
             return FluTheme.windowActiveBackgroundColor
@@ -27,6 +37,8 @@ Window {
     property bool showMinimize: true
     property bool showMaximize: true
     property bool showStayTop: true
+    property bool useSystemAppBar
+    property bool autoMaximize: false
     property var closeListener: function(event){
         if(closeDestory){
             destoryOnClose()
@@ -36,24 +48,43 @@ Window {
         }
     }
     signal initArgument(var argument)
+    signal firstVisible()
     id:window
+    maximumWidth: useSystemAppBar&&fixSize ? width : 16777215
+    maximumHeight: useSystemAppBar&&fixSize ? height : 16777215
+    minimumWidth: useSystemAppBar&&fixSize ? width : 0
+    minimumHeight: useSystemAppBar&&fixSize ? height : 0
     color:"transparent"
     onStayTopChanged: {
         d.changedStayTop()
     }
     Component.onCompleted: {
+        useSystemAppBar = FluApp.useSystemAppBar
         lifecycle.onCompleted(window)
         initArgument(argument)
         d.changedStayTop()
+        if(useSystemAppBar){
+            window.moveWindowToDesktopCenter()
+            if(window.autoMaximize){
+                window.showMaximized()
+            }else{
+                window.show()
+            }
+        }
     }
     Component.onDestruction: {
         lifecycle.onDestruction()
     }
     onVisibleChanged: {
+        if(visible && d.isFirstVisible){
+            window.firstVisible()
+            d.isFirstVisible = false
+        }
         lifecycle.onVisible(visible)
     }
     QtObject{
         id:d
+        property bool isFirstVisible: true
         function changedStayTop(){
             function toggleStayTop(){
                 if(window.stayTop){
@@ -81,34 +112,35 @@ Window {
             color: window.backgroundColor
         }
     }
-    Component{
-        id:com_app_bar
-        FluAppBar {
-            title: window.title
-            showDark: window.showDark
-            showClose: window.showClose
-            showMinimize: window.showMinimize
-            showMaximize: window.showMaximize
-            showStayTop: window.showStayTop
-        }
-    }
     FluLoader{
         anchors.fill: parent
         sourceComponent: background
     }
     FluLoader{
-        id: loader_title_bar
+        id:loader_app_bar
         anchors {
             top: parent.top
             left: parent.left
             right: parent.right
         }
-        sourceComponent: window.appBar
+        sourceComponent: window.useSystemAppBar ? undefined : com_app_bar
+    }
+    Component{
+        id:com_app_bar
+        Item{
+            data: window.appBar
+            height: {
+                if(FluApp.useSystemAppBar){
+                    return 0
+                }
+                return window.fitsAppBarWindows ? 0 : childrenRect.height
+            }
+        }
     }
     Item{
         id:container
         anchors{
-            top: loader_title_bar.bottom
+            top: loader_app_bar.bottom
             left: parent.left
             right: parent.right
             bottom: parent.bottom
@@ -201,38 +233,47 @@ Window {
         onReady: {
             flags = flags | Qt.Window | Qt.CustomizeWindowHint | Qt.WindowTitleHint | Qt.WindowSystemMenuHint | Qt.WindowMinMaxButtonsHint | Qt.WindowCloseButtonHint
             if(appBar){
-                var title_bar = loader_title_bar.item
-                setTitleBarItem(title_bar)
-                moveWindowToDesktopCenter()
-                setHitTestVisible(title_bar.minimizeButton())
-                setHitTestVisible(title_bar.maximizeButton())
-                setHitTestVisible(title_bar.closeButton())
-                setHitTestVisible(title_bar.stayTopButton())
+                var appbar = window.appBar
+                window.moveWindowToDesktopCenter()
                 setWindowFixedSize(fixSize)
-                title_bar.maximizeButton.visible = !fixSize
                 if (blurBehindWindowEnabled)
                     window.background = undefined
             }
-            window.show()
+            if(window.autoMaximize){
+                window.showMaximized()
+            }else{
+                window.show()
+            }
         }
     }
     WindowLifecycle{
         id:lifecycle
     }
-    WindowBorder{
-        z:999
-        visible: !FluTools.isLinux()
-    }
-    Rectangle{
+    FluLoader{
+        id:loader_window_border
         anchors.fill: parent
-        color: "#00000000"
-        border.width: 1
-        visible: FluTools.isLinux()
-        border.color: {
-            if(window.active){
-                return "#333333"
+        z:999
+        sourceComponent: FluApp.useSystemAppBar ? undefined : com_window_border
+    }
+    Component{
+        id:com_window_border
+        Item{
+            WindowBorder{
+                anchors.fill: parent
+                visible: !FluTools.isLinux()
             }
-            return "#999999"
+            Rectangle{
+                anchors.fill: parent
+                color: Qt.rgba(0,0,0,0)
+                border.width: 1
+                visible: FluTools.isLinux()
+                border.color: {
+                    if(window.active){
+                        return Qt.rgba(51/255,51/255,51/255,1)
+                    }
+                    return Qt.rgba(153/255,153/255,153/255,1)
+                }
+            }
         }
     }
     function destoryOnClose(){
@@ -261,9 +302,15 @@ Window {
     function registerForWindowResult(path){
         return lifecycle.createRegister(window,path)
     }
+    function moveWindowToDesktopCenter(){
+        return framless_helper.moveWindowToDesktopCenter()
+    }
     function onResult(data){
         if(_pageRegister){
             _pageRegister.onResult(data)
         }
+    }
+    function containerItem(){
+        return container
     }
 }

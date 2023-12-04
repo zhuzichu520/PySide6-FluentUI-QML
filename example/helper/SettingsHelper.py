@@ -11,7 +11,6 @@ class SettingsHelper(QObject):
         self._settings = QSettings()
 
     def init(self):
-        applicationPath = QCoreApplication.applicationFilePath()
         iniFileName = "example.ini"
         iniFilePath = QStandardPaths.writableLocation(
             QStandardPaths.AppLocalDataLocation)+"/"+iniFileName
@@ -57,3 +56,11 @@ class SettingsHelper(QObject):
     @Slot(bool)
     def saveVsync(self, vsync):
         self._save("vsync", vsync)
+
+    @Slot(result=bool)
+    def getUseSystemAppBar(self):
+        return self._get("useSystemAppBar")
+
+    @Slot(bool)
+    def saveUseSystemAppBar(self, useSystemAppBar):
+        self._save("useSystemAppBar", useSystemAppBar)    

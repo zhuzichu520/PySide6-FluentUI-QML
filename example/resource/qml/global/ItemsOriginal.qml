@@ -150,6 +150,12 @@ FluObject{
             url:"qrc:/example/qml/page/T_ColorPicker.qml"
             onTap:{ navigationView.push(url) }
         }
+        FluPaneItem{
+            title:"ShortcutPicker"
+            menuDelegate: paneItemMenu
+            url:"qrc:/example/qml/page/T_ShortcutPicker.qml"
+            onTap:{ navigationView.push(url) }
+        }
     }
 
     FluPaneItemExpander{
@@ -407,9 +413,9 @@ FluObject{
             onTap:{ navigationView.push(url) }
         }
         FluPaneItem{
-            title:"Http"
+            title:"Network"
             menuDelegate: paneItemMenu
-            url:"qrc:/example/qml/page/T_Http.qml"
+            url:"qrc:/example/qml/page/T_Network.qml"
             onTap:{ navigationView.push(url) }
         }
         FluPaneItem{

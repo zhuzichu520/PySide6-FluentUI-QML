@@ -13,7 +13,7 @@ from PySide6.QtQml import QQmlApplicationEngine
 # 运行之前先保证 PySide6-FluentUI-QML 已安装
 # pip install PySide6-FluentUI-QML
 # or
-# sys.path.append("D:\PyProjects\PySide6-FluentUI-QML")
+sys.path.append("D:\PyProjects\PySide6-FluentUI-QML")
 import FluentUI
 #----------------------------------------------------------
 # tips：如果使用QtCreator进行QML编写 import FluentUI爆红导致代码无法自动补全，请按https://github.com/zhuzichu520/PySide6-FluentUI-QML/wiki/Qml-code-completion 这个方法解决
@@ -25,8 +25,10 @@ import resource.example_rc as rc
 from component.CircularReveal import CircularReveal
 from component.FileWatcher import FileWatcher
 from component.FpsItem import FpsItem
+import helper.Log as Log
 
 def main():
+    Log.setup("example")
     QNetworkProxy.setApplicationProxy(QNetworkProxy.ProxyType.NoProxy)
     os.environ["QT_QUICK_CONTROLS_STYLE"] = "Basic"
     QGuiApplication.setOrganizationName("ZhuZiChu")

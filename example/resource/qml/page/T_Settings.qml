@@ -72,6 +72,36 @@ FluScrollablePage{
         }
     }
 
+    FluArea{
+        Layout.fillWidth: true
+        Layout.topMargin: 20
+        height: 50
+        paddings: 10
+        FluCheckBox{
+            text:"Use System AppBar"
+            checked: FluApp.useSystemAppBar
+            anchors.verticalCenter: parent.verticalCenter
+            onClicked: {
+                FluApp.useSystemAppBar = !FluApp.useSystemAppBar
+                dialog_restart.open()
+            }
+        }
+    }
+
+    FluArea{
+        Layout.fillWidth: true
+        Layout.topMargin: 20
+        height: 50
+        paddings: 10
+        FluCheckBox{
+            text:"fitsAppBarWindows"
+            checked: window.fitsAppBarWindows
+            anchors.verticalCenter: parent.verticalCenter
+            onClicked: {
+                window.fitsAppBarWindows = !window.fitsAppBarWindows
+            }
+        }
+    }
 
     FluArea{
         Layout.fillWidth: true
@@ -199,5 +229,4 @@ FluScrollablePage{
             }
         }
     }
-
 }
