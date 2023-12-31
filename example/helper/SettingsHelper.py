@@ -1,6 +1,6 @@
 # This Python file uses the following encoding: utf-8
 
-from PySide6.QtCore import QObject, Slot, QDataStream, QStandardPaths, QSettings, QByteArray, QIODevice, QCoreApplication, QCoreApplication
+from PySide6.QtCore import QObject, Slot, QStandardPaths, QSettings, qDebug
 from define import Singleton
 
 
@@ -15,52 +15,28 @@ class SettingsHelper(QObject):
         iniFilePath = QStandardPaths.writableLocation(
             QStandardPaths.AppLocalDataLocation)+"/"+iniFileName
         self._settings = QSettings(iniFilePath, QSettings.IniFormat)
-        print("Application configuration file path ->", self._settings.fileName)
 
     def _save(self, key, val):
-        data = QByteArray()
-        stream = QDataStream(data, QIODevice.WriteOnly)
-        stream.setVersion(QDataStream.Qt_5_6)
-        stream.writeQVariant(val)
-        self._settings.setValue(key, data)
+        self._settings.setValue(key, val)
 
-    def _get(self, key):
-        data = QByteArray(self._settings.value(key))
-        if data.isEmpty():
-            return
-        stream = QDataStream(data)
-        stream.setVersion(QDataStream.Qt_5_6)
-        val = stream.readQVariant()
-        return val
-
-    @Slot(result=str)
-    def getRender(self):
-        return self._get("render")
-
-    @Slot(str)
-    def saveRender(self, render):
-        self._save("render", render)
+    def _get(self, key, default):
+        data = self._settings.value(key)
+        if data is None:
+            return default
+        return data
 
     @Slot(result=int)
     def getDarkMode(self):
-        return self._get("darkMode")
+        return int(self._get("darkMode", 0))
 
     @Slot(int)
-    def saveDarkMode(self, darkMode):
+    def saveDarkMode(self, darkMode:int):
         self._save("darkMode", darkMode)
 
     @Slot(result=bool)
-    def getVsync(self):
-        return self._get("vsync")
-
-    @Slot(bool)
-    def saveVsync(self, vsync):
-        self._save("vsync", vsync)
-
-    @Slot(result=bool)
     def getUseSystemAppBar(self):
-        return self._get("useSystemAppBar")
+        return bool(self._get('useSystemAppBar', "false") == "true")
 
     @Slot(bool)
-    def saveUseSystemAppBar(self, useSystemAppBar):
+    def saveUseSystemAppBar(self, useSystemAppBar:bool):
         self._save("useSystemAppBar", useSystemAppBar)    

@@ -2,6 +2,7 @@
 import sys
 import os
 from PySide6.QtCore import QProcess
+from PySide6.QtQuick import QQuickWindow,QSGRendererInterface
 from PySide6.QtNetwork import QNetworkProxy
 from PySide6.QtGui import QGuiApplication
 from PySide6.QtQml import QQmlApplicationEngine
@@ -29,7 +30,7 @@ import helper.Log as Log
 
 def main():
     Log.setup("example")
-    QNetworkProxy.setApplicationProxy(QNetworkProxy.ProxyType.NoProxy)
+    QQuickWindow.setGraphicsApi(QSGRendererInterface.GraphicsApi.OpenGL)
     os.environ["QT_QUICK_CONTROLS_STYLE"] = "Basic"
     QGuiApplication.setOrganizationName("ZhuZiChu")
     QGuiApplication.setOrganizationDomain("https://zhuzichu520.github.io")

@@ -67,6 +67,20 @@ FluContentPage{
             FluButton{
                 implicitWidth: parent.width
                 implicitHeight: 36
+                text: "Head"
+                onClicked: {
+                    text_info.text = ""
+                    FluNetwork.head("https://httpbingo.org/head")
+                    .addQuery("name","孙悟空")
+                    .addQuery("age",500)
+                    .addQuery("address","花果山水帘洞")
+                    .bind(root)
+                    .go(callable)
+                }
+            }
+            FluButton{
+                implicitWidth: parent.width
+                implicitHeight: 36
                 text: "Post Body"
                 onClicked: {
                     text_info.text = ""
@@ -276,6 +290,21 @@ FluContentPage{
                     .add("name","孙悟空")
                     .add("age",500)
                     .add("address","花果山水帘洞")
+                    .bind(root)
+                    .go(callable)
+                }
+            }
+            FluButton{
+                implicitWidth: parent.width
+                implicitHeight: 36
+                text: "Open Log"
+                onClicked: {
+                    text_info.text = ""
+                    FluNetwork.postJson("https://httpbingo.org/post")
+                    .add("name","孙悟空")
+                    .add("age",500)
+                    .add("address","花果山水帘洞")
+                    .openLog(true)
                     .bind(root)
                     .go(callable)
                 }

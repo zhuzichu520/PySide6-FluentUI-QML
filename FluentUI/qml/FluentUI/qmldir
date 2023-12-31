@@ -40,6 +40,7 @@ FluFocusRectangle 1.0 Controls/FluFocusRectangle.qml
 FluIcon 1.0 Controls/FluIcon.qml
 FluIconButton 1.0 Controls/FluIconButton.qml
 FluImage 1.0 Controls/FluImage.qml
+FluImageButton 1.0 Controls/FluImageButton.qml
 FluInfoBar 1.0 Controls/FluInfoBar.qml
 FluItemDelegate 1.0 Controls/FluItemDelegate.qml
 FluLoader 1.0 Controls/FluLoader.qml
@@ -83,7 +84,6 @@ FluSpinBox 1.0 Controls/FluSpinBox.qml
 FluStaggeredView 1.0 Controls/FluStaggeredView.qml
 FluStatusView 1.0 Controls/FluStatusView.qml
 FluTabView 1.0 Controls/FluTabView.qml
-FluTableModelColumn 1.0 Controls/FluTableModelColumn.qml
 FluTableView 1.0 Controls/FluTableView.qml
 FluText 1.0 Controls/FluText.qml
 FluTextBox 1.0 Controls/FluTextBox.qml

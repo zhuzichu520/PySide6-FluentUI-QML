@@ -34,10 +34,17 @@ Rectangle{
     property bool isMac: FluTools.isMacos()
     property color borerlessColor : FluTheme.primaryColor
     property var maxClickListener : function(){
-        if (d.win.visibility === Window.Maximized)
-            d.win.visibility = Window.Windowed
-        else
-            d.win.visibility = Window.Maximized
+        if(FluTools.isMacos()){
+            if (d.win.visibility === Window.FullScreen)
+                d.win.visibility = Window.Windowed
+            else
+                d.win.visibility = Window.FullScreen
+        }else{
+            if (d.win.visibility === Window.Maximized)
+                d.win.visibility = Window.Windowed
+            else
+                d.win.visibility = Window.Maximized
+        }
     }
     property var minClickListener: function(){
         d.win.visibility = Window.Minimized
@@ -57,6 +64,11 @@ Rectangle{
             FluTheme.darkMode = FluThemeType.Dark
         }
     }
+    property var systemMenuListener: function(){
+        if(d.win instanceof FluWindow){
+            d.win.showSystemMenu()
+        }
+    }
     id:control
     color: Qt.rgba(0,0,0,0)
     height: visible ? 30 : 0
@@ -64,6 +76,7 @@ Rectangle{
     z: 65535
     Item{
         id:d
+        property bool hoverMaxBtn: false
         property var win: Window.window
         property bool stayTop: {
             if(d.win instanceof FluWindow){
@@ -74,14 +87,25 @@ Rectangle{
         property bool isRestore: win && Window.Maximized === win.visibility
         property bool resizable: win && !(win.height === win.maximumHeight && win.height === win.minimumHeight && win.width === win.maximumWidth && win.width === win.minimumWidth)
     }
-    TapHandler {
-        onTapped: if (tapCount === 2 && d.resizable) btn_maximize.clicked()
-        gesturePolicy: TapHandler.DragThreshold
-    }
-    DragHandler {
-        target: null
-        grabPermissions: TapHandler.CanTakeOverFromAnything
-        onActiveChanged: if (active) { d.win.startSystemMove(); }
+    MouseArea{
+        anchors.fill: parent
+        onPositionChanged:
+            (mouse)=>{
+                d.win.startSystemMove()
+            }
+        onDoubleClicked:
+            (mouse)=>{
+                if(d.resizable && Qt.LeftButton){
+                    btn_maximize.clicked()
+                }
+            }
+        acceptedButtons: Qt.LeftButton|Qt.RightButton
+        onClicked:
+            (mouse)=>{
+                if (mouse.button === Qt.RightButton){
+                    control.systemMenuListener()
+                }
+            }
     }
     Row{
         anchors{
@@ -105,6 +129,49 @@ Rectangle{
             anchors.verticalCenter: parent.verticalCenter
         }
     }
+
+    Component{
+        id:com_mac_buttons
+        RowLayout{
+            FluImageButton{
+                Layout.preferredHeight: 12
+                Layout.preferredWidth: 12
+                normalImage: "../Image/btn_close_normal.png"
+                hoveredImage: "../Image/btn_close_hovered.png"
+                pushedImage: "../Image/btn_close_pushed.png"
+                visible: showClose
+                onClicked: closeClickListener()
+            }
+            FluImageButton{
+                Layout.preferredHeight: 12
+                Layout.preferredWidth: 12
+                normalImage: "../Image/btn_min_normal.png"
+                hoveredImage: "../Image/btn_min_hovered.png"
+                pushedImage: "../Image/btn_min_pushed.png"
+                onClicked: minClickListener()
+                visible: showMinimize
+            }
+            FluImageButton{
+                Layout.preferredHeight: 12
+                Layout.preferredWidth: 12
+                normalImage: "../Image/btn_max_normal.png"
+                hoveredImage: "../Image/btn_max_hovered.png"
+                pushedImage: "../Image/btn_max_pushed.png"
+                onClicked: maxClickListener()
+                visible: d.resizable && showMaximize
+            }
+        }
+    }
+
+    FluLoader{
+        anchors{
+            verticalCenter: parent.verticalCenter
+            left: parent.left
+            leftMargin: 10
+        }
+        sourceComponent: isMac ? com_mac_buttons : undefined
+    }
+
     RowLayout{
         anchors.right: parent.right
         height: control.height
@@ -166,6 +233,9 @@ Rectangle{
                 if(pressed){
                     return maximizePressColor
                 }
+                if(FluTools.isWindows11OrGreater()){
+                    return d.hoverMaxBtn ? maximizeHoverColor : maximizeNormalColor
+                }
                 return hovered ? maximizeHoverColor : maximizeNormalColor
             }
             Layout.alignment: Qt.AlignVCenter
@@ -210,5 +280,18 @@ Rectangle{
     }
     function darkButton(){
         return btn_dark
+    }
+    function maximizeButtonHover(){
+        var hover = false;
+        var pos = btn_maximize.mapToGlobal(0,0)
+        if(btn_maximize.visible){
+            var rect = Qt.rect(pos.x,pos.y,btn_maximize.width,btn_maximize.height)
+            pos = FluTools.cursorPos()
+            if(pos.x>rect.x && pos.x<(rect.x+rect.width) && pos.y>rect.y && pos.y<(rect.y+rect.height)){
+                hover = true;
+            }
+        }
+        d.hoverMaxBtn = hover
+        return hover;
     }
 }

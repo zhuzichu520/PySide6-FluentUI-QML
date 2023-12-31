@@ -4,7 +4,6 @@ from PySide6.QtCore import QObject, Signal, Property
 from define import Singleton
 import importlib
 
-
 @Singleton
 class AppInfo(QObject):
 

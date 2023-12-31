@@ -62,22 +62,6 @@ FluScrollablePage{
         height: 50
         paddings: 10
         FluCheckBox{
-            text:"V-Sync"
-            checked: FluApp.vsync
-            anchors.verticalCenter: parent.verticalCenter
-            onClicked: {
-                FluApp.vsync = !FluApp.vsync
-                dialog_restart.open()
-            }
-        }
-    }
-
-    FluArea{
-        Layout.fillWidth: true
-        Layout.topMargin: 20
-        height: 50
-        paddings: 10
-        FluCheckBox{
             text:"Use System AppBar"
             checked: FluApp.useSystemAppBar
             anchors.verticalCenter: parent.verticalCenter
@@ -99,26 +83,6 @@ FluScrollablePage{
             anchors.verticalCenter: parent.verticalCenter
             onClicked: {
                 window.fitsAppBarWindows = !window.fitsAppBarWindows
-            }
-        }
-    }
-
-    FluArea{
-        Layout.fillWidth: true
-        Layout.topMargin: 20
-        height: 50
-        paddings: 10
-        FluCheckBox{
-            text:"Software Render"
-            checked: SettingsHelper.getRender() === "software"
-            anchors.verticalCenter: parent.verticalCenter
-            onClicked: {
-                if(SettingsHelper.getRender() === "software"){
-                    SettingsHelper.saveRender("")
-                }else{
-                    SettingsHelper.saveRender("software")
-                }
-                dialog_restart.open()
             }
         }
     }

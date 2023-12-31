@@ -19,10 +19,12 @@ Module {
         Property { name: "initialRoute"; type: "QString"; notify: "initialRouteChanged"; index: 1 }
         Property { name: "routes"; type: "QJsonObject"; notify: "routesChanged"; index: 2 }
         Property { name: "useSystemAppBar"; type: "bool"; notify: "useSystemAppBarChanged"; index: 3 }
+        Property { name: "windowIcon"; type: "QString"; notify: "windowIconChanged"; index: 4 }
         Signal { name: "vsyncChanged" }
         Signal { name: "initialRouteChanged" }
         Signal { name: "routesChanged" }
         Signal { name: "useSystemAppBarChanged" }
+        Signal { name: "windowIconChanged" }
         Method { name: "run" }
         Method {
             name: "navigate"
@@ -80,6 +82,28 @@ Module {
             type: "bool"
             Parameter { name: "code"; type: "QString" }
         }
+    }
+    Component {
+        file: "FluColorSet.h"
+        name: "FluColorSet"
+        accessSemantics: "reference"
+        prototype: "QObject"
+        exports: ["FluentUI/FluColorSet 1.0"]
+        exportMetaObjectRevisions: [256]
+        Property { name: "darkest"; type: "QString"; notify: "darkestChanged"; index: 0 }
+        Property { name: "darker"; type: "QString"; notify: "darkerChanged"; index: 1 }
+        Property { name: "dark"; type: "QString"; notify: "darkChanged"; index: 2 }
+        Property { name: "normal"; type: "QString"; notify: "normalChanged"; index: 3 }
+        Property { name: "light"; type: "QString"; notify: "lightChanged"; index: 4 }
+        Property { name: "lighter"; type: "QString"; notify: "lighterChanged"; index: 5 }
+        Property { name: "lightest"; type: "QString"; notify: "lightestChanged"; index: 6 }
+        Signal { name: "darkestChanged" }
+        Signal { name: "darkerChanged" }
+        Signal { name: "darkChanged" }
+        Signal { name: "normalChanged" }
+        Signal { name: "lightChanged" }
+        Signal { name: "lighterChanged" }
+        Signal { name: "lightestChanged" }
     }
     Component {
         file: "FluColors.h"
@@ -236,6 +260,17 @@ Module {
         }
     }
     Component {
+        file: "FluFramelessHelper.h"
+        name: "FluFramelessHelper"
+        accessSemantics: "reference"
+        prototype: "QObject"
+        exports: ["FluentUI/FluFramelessHelper 1.0"]
+        exportMetaObjectRevisions: [256]
+        Method { name: "_onStayTopChange" }
+        Method { name: "_onScreenChanged" }
+        Method { name: "showSystemMenu" }
+    }
+    Component {
         file: "Def.h"
         name: "FluNavigationViewType"
         accessSemantics: "none"
@@ -263,9 +298,11 @@ Module {
         Property { name: "timeout"; type: "int"; notify: "timeoutChanged"; index: 0 }
         Property { name: "retry"; type: "int"; notify: "retryChanged"; index: 1 }
         Property { name: "cacheDir"; type: "QString"; notify: "cacheDirChanged"; index: 2 }
+        Property { name: "openLog"; type: "bool"; notify: "openLogChanged"; index: 3 }
         Signal { name: "timeoutChanged" }
         Signal { name: "retryChanged" }
         Signal { name: "cacheDirChanged" }
+        Signal { name: "openLogChanged" }
         Method {
             name: "get"
             type: "NetworkParams"
@@ -703,6 +740,11 @@ Module {
         Method { name: "isSoftware"; type: "bool" }
         Method { name: "currentTimestamp"; type: "qlonglong" }
         Method { name: "cursorPos"; type: "QPoint" }
+        Method { name: "windowIcon"; type: "QIcon" }
+        Method { name: "cursorScreenIndex"; type: "int" }
+        Method { name: "windowBuildNumber"; type: "int" }
+        Method { name: "isWindows11OrGreater"; type: "bool" }
+        Method { name: "isWindows10OrGreater"; type: "bool" }
     }
     Component {
         file: "FluTreeModel.h"
@@ -2377,6 +2419,12 @@ Module {
             type: "NetworkParams"
             isPointer: true
             Parameter { name: "target"; type: "QObject"; isPointer: true }
+        }
+        Method {
+            name: "openLog"
+            type: "NetworkParams"
+            isPointer: true
+            Parameter { name: "val"; type: "QVariant" }
         }
         Method {
             name: "go"

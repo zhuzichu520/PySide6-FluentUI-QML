@@ -16,21 +16,19 @@ Item {
 
     Connections{
         target: FluApp
-        function onVsyncChanged(){
-            SettingsHelper.saveVsync(FluApp.vsync)
-        }
         function onUseSystemAppBarChanged(){
             SettingsHelper.saveUseSystemAppBar(FluApp.useSystemAppBar)
         }
     }
 
     Component.onCompleted: {
+        FluNetwork.openLog = false
         FluNetwork.setInterceptor(function(param){
             param.addHeader("Token","000000000000000000000")
         })
         FluApp.init(app)
+        FluApp.windowIcon = "qrc:/example/res/image/favicon.ico"
         FluApp.useSystemAppBar = SettingsHelper.getUseSystemAppBar()
-        FluApp.vsync = SettingsHelper.getVsync()
         FluTheme.darkMode = SettingsHelper.getDarkMode()
         FluTheme.enableAnimation = true
         FluApp.routes = {
