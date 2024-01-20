@@ -5,7 +5,7 @@ with open('README.md', encoding='utf-8') as f:
 
 setuptools.setup(
     name = "PySide6-FluentUI-QML",
-    version = "1.6.6",
+    version = "1.6.7",
     keywords="pyside fluent qml",
     author="ZhuZiChu",
     author_email="zhuzichu520@outlook.com",

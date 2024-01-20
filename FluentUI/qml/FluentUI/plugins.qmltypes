@@ -266,6 +266,7 @@ Module {
         prototype: "QObject"
         exports: ["FluentUI/FluFramelessHelper 1.0"]
         exportMetaObjectRevisions: [256]
+        Signal { name: "loadCompleted" }
         Method { name: "_onStayTopChange" }
         Method { name: "_onScreenChanged" }
         Method { name: "showSystemMenu" }
@@ -494,7 +495,7 @@ Module {
         }
         Enum {
             name: "CloseButtonVisibility"
-            values: ["Nerver", "Always", "OnHover"]
+            values: ["Never", "Always", "OnHover"]
         }
     }
     Component {
@@ -745,6 +746,11 @@ Module {
         Method { name: "windowBuildNumber"; type: "int" }
         Method { name: "isWindows11OrGreater"; type: "bool" }
         Method { name: "isWindows10OrGreater"; type: "bool" }
+        Method {
+            name: "getTaskBarHeight"
+            type: "int"
+            Parameter { name: "window"; type: "QQuickWindow"; isPointer: true }
+        }
     }
     Component {
         file: "FluTreeModel.h"

@@ -9,7 +9,7 @@ Button {
     property string contentDescription: ""
     QtObject{
         id:d
-        property bool checked: rect_back.height == background.height
+        property bool checked: (rect_back.height === background.height) && (progress === 1)
     }
     property color normalColor: {
         if(d.checked){
@@ -71,7 +71,7 @@ Button {
             color: FluTheme.primaryColor
             anchors.bottom: parent.bottom
             Behavior on height{
-                enabled: control.progress === 1
+                enabled: control.progress !== 0
                 SequentialAnimation {
                     PauseAnimation {
                         duration: FluTheme.enableAnimation ? 167 : 0
