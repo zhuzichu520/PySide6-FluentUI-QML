@@ -1,30 +1,43 @@
-#!C:\Users\zhuzi\AppData\Local\Programs\Python\Python311\python.exe
-# EASY-INSTALL-ENTRY-SCRIPT: 'PySide6-Essentials==6.5.3','console_scripts','pyside6-rcc'
 import os
 import sys
-import site
 import subprocess
 
+def find_cmd():
+    base_cmd = "pyside6-rcc"
+    if os.name == 'nt':  # Windows
+        cmd = f"{base_cmd}.exe"
+    else:
+        cmd = base_cmd
+
+    bin_paths = []
+
+    # Unix global installation, Windows
+    bin_paths.append(os.path.join(sys.prefix, 'bin'))
+    # Also consider ~/.local/bin for Unix-like user installation
+    # But this is a fallback so at the end of list
+    if os.name != 'nt':
+        bin_paths.append(os.path.expanduser('~/.local/bin'))
+
+    for dir in bin_paths:
+        path = os.path.join(dir, cmd)
+        if os.path.exists(path):
+            return path
+
+    return None
 
 def exec():
-    if len(sys.argv) < 2:
-        print("error paramter")
+    if len(sys.argv) < 3:
+        print("Parameter error: python qrc2py.py /path/to/qrc/file /path/to/output.py")
         return
     arguments = sys.argv[1:]
     command_args = arguments[0]+' -o '+arguments[1]
-    amin_script = os.path.join(sys.prefix, "Scripts", "pyside6-rcc.exe")
-    print("admin_script = "+amin_script)
-    if os.path.exists(amin_script):
-        subprocess.run(f'{amin_script} {command_args}', shell=True)
-        return
-    user_script = os.path.join(os.path.dirname(
-        site.USER_SITE), "Scripts", "pyside6-rcc.exe")
-    print("user_script = "+user_script)
-    if os.path.exists(user_script):
-        subprocess.run(f'{user_script} {command_args}', shell=True)
-        return
-    print("error: not find pyside6-rcc")
+    script = find_cmd()
+    if script is None:
+        print("error: not find pyside6-rcc")
+        exit(1)
 
+    print("script = " + script)
+    subprocess.run(f'{script} {command_args}', shell=True)
 
 if __name__ == '__main__':
     exec()
