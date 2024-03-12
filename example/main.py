@@ -9,7 +9,7 @@ from PySide6.QtQml import QQmlApplicationEngine
 
 # 请通过launch.json运行，直接运行main.py不会执行pyside6-rcc，而导致资源文件缺少，具体逻辑查看tasks.json与Scripts/qrc2py.py
 # 需要输出exe，安装pip install pyinstaller，然后pyinstaller example/main.spec，打包之前请先执行tasks.json，导出example_rc.py资源文件
-# example_rc.py位置在example/resource文件夹下
+# example_rc.py位置在example/resources文件夹下
 #----------------------------------------------------------
 # 运行之前先保证 PySide6-FluentUI-QML 已安装
 # pip install PySide6-FluentUI-QML
@@ -22,7 +22,7 @@ import FluentUI
 from helper.SettingsHelper import SettingsHelper
 from AppInfo import AppInfo
 # 注册资源以及自定义的QML组件
-import resource.example_rc as rc
+import resources.example_rc as rc
 from component.CircularReveal import CircularReveal
 from component.FileWatcher import FileWatcher
 from component.FpsItem import FpsItem

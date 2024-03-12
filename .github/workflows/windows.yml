@@ -48,7 +48,7 @@ jobs:
           msvcArch: ${{ matrix.msvc_arch }}          
         shell: pwsh
         run: |
-          python ./Scripts/qrc2py.py ./example/resource/example.qrc ./example/resource/example_rc.py
+          python ./Scripts/qrc2py.py ./example/resources/example.qrc ./example/resources/example_rc.py
           python ./Scripts/genversion.py
           pyinstaller -y ./example/main.spec
   

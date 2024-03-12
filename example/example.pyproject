@@ -7,6 +7,6 @@
     "component/CircularReveal.py",
     "component/FileWatcher.py",
     "component/FpsItem.py",
-    "resource/example.qrc"
+    "resources/example.qrc"
     ]
 }

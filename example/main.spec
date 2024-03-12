@@ -2,7 +2,7 @@
 import os
 from PyInstaller.utils.hooks import collect_all,collect_submodules
 
-datas = [('./resource/example_rc.py', '.')]
+datas = [('./resources/example_rc.py', '.')]
 if os.path.exists('./example/version.py'):
     datas.append(('./version.py', '.'))
 binaries = []
@@ -79,7 +79,7 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-	icon='./resource/res/image/favicon.ico',
+	icon='./resources/res/image/favicon.ico',
     version=file_version
 )
 

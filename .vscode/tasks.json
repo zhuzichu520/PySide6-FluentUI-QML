@@ -9,8 +9,8 @@
             "command": "python",
             "args": [
                 "./Scripts/qrc2py.py",
-                "./example/resource/example.qrc",
-                "./example/resource/example_rc.py"
+                "./example/resources/example.qrc",
+                "./example/resources/example_rc.py"
             ],
             "group": {
                 "kind": "build",
