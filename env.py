@@ -1,0 +1,60 @@
+import sys
+import os
+
+projectName = "example"
+
+
+# noinspection PyPep8Naming
+def _scriptsPath():
+    if sys.platform.startswith("win"):
+        return os.path.join('.', 'venv', "Scripts")
+    return os.path.join('.', 'venv', "bin")
+
+
+# noinspection PyPep8Naming
+def _pathSeparator():
+    if sys.platform.startswith("darwin"):
+        return ":"
+    return ";"
+
+def pip():
+    return os.path.join(_scriptsPath(), 'pip')
+
+
+def pyinstaller():
+    return os.path.join(_scriptsPath(), 'pyinstaller')
+
+
+def nuitka():
+    if sys.platform.startswith("win"):
+        return os.path.join(_scriptsPath(), 'nuitka.bat')
+    return os.path.join(_scriptsPath(), 'nuitka')
+
+
+def python():
+    return os.path.join(_scriptsPath(), 'python')
+
+
+def pyside6_rcc():
+    return os.path.join(_scriptsPath(), 'pyside6-rcc')
+
+
+# noinspection SpellCheckingInspection
+def pyside6_lupdate():
+    return os.path.join(_scriptsPath(), 'pyside6-lupdate')
+
+
+# noinspection SpellCheckingInspection
+def pyside6_lrelease():
+    return os.path.join(_scriptsPath(), 'pyside6-lrelease')
+
+
+# noinspection PyPep8Naming
+def environment():
+    environ = os.environ.copy()
+    current = os.environ.get('PYTHONPATH', '')
+    workPath = os.path.dirname(os.path.abspath(__file__))
+    if current != '':
+        workPath = workPath + _pathSeparator() + current
+    environ["PYTHONPATH"] = workPath
+    return environ

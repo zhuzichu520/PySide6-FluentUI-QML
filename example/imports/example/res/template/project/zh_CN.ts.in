@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="zh_CN">
+<context>
+    <name>main</name>
+    <message>
+        <location filename="imports/project/qml/main.qml" line="10"/>
+        <source>{projectName}</source>
+        <translation type="unfinished">{projectName}</translation>
+    </message>
+    <message>
+        <location filename="imports/project/qml/main.qml" line="22"/>
+        <source>Welcome to FluentUI</source>
+        <translation type="unfinished">欢迎使用FluentUI</translation>
+    </message>
+    <message>
+        <location filename="imports/project/qml/main.qml" line="27"/>
+        <source>Learn FluentUI</source>
+        <translation type="unfinished">学习FluentUI</translation>
+    </message>
+    <message>
+        <location filename="imports/project/qml/main.qml" line="42"/>
+        <source>Author&apos;s WeChat ID: </source>
+        <translation type="unfinished">作者微信号: </translation>
+    </message>
+</context>
+</TS>

@@ -1,8 +1,9 @@
-.roperproject
-*.pyproject.user
-*.pyc
-example_rc.py
 build
 dist
-action-cli
-example/version.py
+resource_rc.py
+__pycache__
+.idea
+venv
+source.zip
+source_all.zip
+*.qm

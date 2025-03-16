@@ -1,20 +1,18 @@
-# This Python file uses the following encoding: utf-8
+from PySide6.QtCore import QObject, Slot, QStandardPaths, QSettings
+from PySide6.QtGui import QGuiApplication
 
-from PySide6.QtCore import QObject, Slot, QStandardPaths, QSettings, qDebug
-from define import Singleton
+from FluentUI.Singleton import Singleton
 
 
+# noinspection PyPep8Naming
 @Singleton
 class SettingsHelper(QObject):
-    def __init__(self, par=None):
-        super().__init__(parent=par)
+    def __init__(self):
+        super().__init__(QGuiApplication.instance())
         self._settings = QSettings()
-
-    def init(self):
         iniFileName = "example.ini"
-        iniFilePath = QStandardPaths.writableLocation(
-            QStandardPaths.AppLocalDataLocation)+"/"+iniFileName
-        self._settings = QSettings(iniFilePath, QSettings.IniFormat)
+        iniFilePath = QStandardPaths.writableLocation(QStandardPaths.StandardLocation.AppLocalDataLocation) + "/" + iniFileName
+        self._settings = QSettings(iniFilePath, QSettings.Format.IniFormat)
 
     def _save(self, key, val):
         self._settings.setValue(key, val)
@@ -30,7 +28,7 @@ class SettingsHelper(QObject):
         return int(self._get("darkMode", 0))
 
     @Slot(int)
-    def saveDarkMode(self, darkMode:int):
+    def saveDarkMode(self, darkMode: int):
         self._save("darkMode", darkMode)
 
     @Slot(result=bool)
@@ -38,5 +36,13 @@ class SettingsHelper(QObject):
         return bool(self._get('useSystemAppBar', "false") == "true")
 
     @Slot(bool)
-    def saveUseSystemAppBar(self, useSystemAppBar:bool):
-        self._save("useSystemAppBar", useSystemAppBar)    
+    def saveUseSystemAppBar(self, useSystemAppBar: bool):
+        self._save("useSystemAppBar", useSystemAppBar)
+
+    @Slot(result=str)
+    def getLanguage(self):
+        return str(self._get("language", "en_US"))
+
+    @Slot(str)
+    def saveLanguage(self, language: str):
+        self._save("language", language)

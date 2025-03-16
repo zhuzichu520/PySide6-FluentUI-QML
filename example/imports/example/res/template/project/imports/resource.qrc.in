@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file>{projectName}/i18n/{projectName}_en_US.qm</file>
+        <file>{projectName}/i18n/{projectName}_zh_CN.qm</file>
+        <file>{projectName}/image/logo.ico</file>
+        <file>{projectName}/qml/App.qml</file>
+        <file>{projectName}/qml/main.qml</file>
+    </qresource>
+</RCC>

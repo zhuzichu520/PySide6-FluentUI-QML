@@ -1,58 +1,79 @@
-# This Python file uses the following encoding: utf-8
-import sys
 import os
-from PySide6.QtCore import QProcess
-from PySide6.QtQuick import QQuickWindow,QSGRendererInterface
-from PySide6.QtNetwork import QNetworkProxy
+import sys
+import asyncio
+from qasync import QEventLoop
+
+from PySide6.QtCore import QProcess, QUrl
 from PySide6.QtGui import QGuiApplication
-from PySide6.QtQml import QQmlApplicationEngine
+from PySide6.QtQml import QQmlApplicationEngine, qmlRegisterType
+from PySide6.QtQuick import QQuickWindow, QSGRendererInterface
 
-# 请通过launch.json运行，直接运行main.py不会执行pyside6-rcc，而导致资源文件缺少，具体逻辑查看tasks.json与Scripts/qrc2py.py
-# 需要输出exe，安装pip install pyinstaller，然后pyinstaller example/main.spec，打包之前请先执行tasks.json，导出example_rc.py资源文件
-# example_rc.py位置在example/resource文件夹下
-#----------------------------------------------------------
-# 运行之前先保证 PySide6-FluentUI-QML 已安装
-# pip install PySide6-FluentUI-QML
-# or
-# sys.path.append("D:\PyProjects\PySide6-FluentUI-QML")
-import FluentUI
-#----------------------------------------------------------
-# tips：如果使用QtCreator进行QML编写 import FluentUI爆红导致代码无法自动补全，请按https://github.com/zhuzichu520/PySide6-FluentUI-QML/wiki/Qml-code-completion 这个方法解决
+from FluentUI import FluentUI
+from FluentUI.FluLogger import LogSetup, Logger
+from example.AppInfo import AppInfo
+from example.component.CircularReveal import CircularReveal
+from example.component.FileWatcher import FileWatcher
+from example.component.FpsItem import FpsItem
+from example.component.OpenGLItem import OpenGLItem
+from example.helper.InitializrHelper import InitializrHelper
+from example.helper.SettingsHelper import SettingsHelper
+from example.helper.TranslateHelper import TranslateHelper
+from example.component.Callback import Callback
+from example.imports import resource_rc as rc
+from example.helper import Async
 
-from helper.SettingsHelper import SettingsHelper
-from AppInfo import AppInfo
-# 注册资源以及自定义的QML组件
-import resource.example_rc as rc
-from component.CircularReveal import CircularReveal
-from component.FileWatcher import FileWatcher
-from component.FpsItem import FpsItem
-import helper.Log as Log
+_uri = "example"
+_major = 1
+_minor = 0
 
+
+# noinspection PyTypeChecker
 def main():
-    Log.setup("example")
-    QQuickWindow.setGraphicsApi(QSGRendererInterface.GraphicsApi.OpenGL)
     os.environ["QT_QUICK_CONTROLS_STYLE"] = "Basic"
+    QQuickWindow.setGraphicsApi(QSGRendererInterface.GraphicsApi.OpenGL)
     QGuiApplication.setOrganizationName("ZhuZiChu")
     QGuiApplication.setOrganizationDomain("https://zhuzichu520.github.io")
     QGuiApplication.setApplicationName("FluentUI")
-    SettingsHelper().init()
+    QGuiApplication.setApplicationDisplayName("FluentUI")
+    LogSetup("example")
+    Logger().debug(f"Load the resource '{rc.__name__}'")
     app = QGuiApplication(sys.argv)
+
+    qmlRegisterType(Callback, _uri, _major, _minor, "Callback")
+    qmlRegisterType(CircularReveal, _uri, _major, _minor, "CircularReveal")
+    qmlRegisterType(FileWatcher, _uri, _major, _minor, "FileWatcher")
+    qmlRegisterType(FpsItem, _uri, _major, _minor, "FpsItem")
+    qmlRegisterType(OpenGLItem, _uri, _major, _minor, "OpenGLItem")
+
     engine = QQmlApplicationEngine()
-    rootContext = engine.rootContext()
-    rootContext.setContextProperty("SettingsHelper", SettingsHelper())
-    rootContext.setContextProperty("AppInfo", AppInfo())
-    FluentUI.init(engine)
-    print(engine.importPathList())
-    qml_file = "qrc:/example/qml/App.qml"
+
+    event_loop = QEventLoop(app)
+    asyncio.set_event_loop(event_loop)
+    app_close_event = asyncio.Event()
+    event_loop.create_task(Async.boot())
+
+    app.aboutToQuit.connect(engine.deleteLater)
+    app.aboutToQuit.connect(app_close_event.set)
+    app.aboutToQuit.connect(lambda: event_loop.create_task(Async.delete()))
+
+    context = engine.rootContext()
+    TranslateHelper().init(engine)
+    context.setContextProperty("AppInfo", AppInfo())
+
+    context.setContextProperty("InitializrHelper", InitializrHelper())
+    context.setContextProperty("SettingsHelper", SettingsHelper())
+    context.setContextProperty("TranslateHelper", TranslateHelper())
+    FluentUI.registerTypes(engine)
+    qml_file = QUrl("qrc:/example/qml/App.qml")
     engine.load(qml_file)
     if not engine.rootObjects():
         sys.exit(-1)
-    exec = app.exec()
-    if(exec == 931):
-        #QGuiApplication.applicationFilePath()需要打包成exe后才能正确的路径重启，不然这个函数获取的路径是python的路径
-        args = QGuiApplication.arguments()[1:]
-        QProcess.startDetached(QGuiApplication.applicationFilePath(),args)
-    return exec
+    with event_loop:
+        result = event_loop.run_until_complete(app_close_event.wait())
+        if result == 931:
+            QProcess.startDetached(QGuiApplication.instance().applicationFilePath(), QGuiApplication.instance().arguments())
+        sys.exit(result)
+
 
 if __name__ == "__main__":
     main()

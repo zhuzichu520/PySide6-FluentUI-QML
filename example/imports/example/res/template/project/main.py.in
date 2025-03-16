@@ -1,0 +1,37 @@
+import os
+import sys
+
+from PySide6.QtCore import QTranslator, QUrl, QLocale
+from PySide6.QtGui import QGuiApplication
+from PySide6.QtQml import QQmlApplicationEngine
+
+from FluentUI import FluentUI
+from FluentUI.FluLogger import LogSetup, Logger
+from {projectName}.imports import resource_rc as rc
+
+
+def main():
+    os.environ["QT_QUICK_CONTROLS_STYLE"] = "Basic"
+    LogSetup("{projectName}")
+    Logger().debug(f"Load the resource '{{rc.__name__}}'")
+    app = QGuiApplication(sys.argv)
+
+    translator = QTranslator()
+    uiLanguages = QLocale.system().uiLanguages()
+    for locale in uiLanguages:
+        baseName = "project_" + QLocale(locale).name()
+        if translator.load(":/project/i18n/" + baseName):
+            app.installTranslator(translator)
+            break
+
+    engine = QQmlApplicationEngine()
+    FluentUI.registerTypes(engine)
+    url = QUrl("qrc:/{projectName}/qml/App.qml")
+    engine.load(url)
+    if not engine.rootObjects():
+        sys.exit(-1)
+    return app.exec()
+
+
+if __name__ == "__main__":
+    main()

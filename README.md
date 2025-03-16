@@ -1,7 +1,6 @@
 # ATTENTION! THIS REPO HAS BEEN DEPRECATED!
-# PLEASE USE THE BRAND NEW [FluentUI-PySide6](https://github.com/zhuzichu520/FluentUI-PySide6) INSTEAD!
+# PLEASE USE THE BRAND NEW [FluentUI2](https://github.com/zhuzichu520/FluentUI2) INSTEAD!
 # THIS REPO IS NO LONGER MAINTAINED.
-
 <div align=center>
   <img width=64 src="doc/preview/fluent_design.svg">
 </div>
@@ -35,13 +34,22 @@ English | <a href="README_zh_CN.md">简体中文</a>
 [download-latest]: https://img.shields.io/github/downloads/zhuzichu520/PySide6-FluentUI-QML/latest/total.svg "latest status"
 
 ## Requirements
-
-+ PySide6
-+ PySide-FluentUI-QML
++ Python 3.11
 
 ## ⚽ Get started
++ run `example` program.
+```bash
+git clone --recursive https://github.com/zhuzichu520/PySide6-FluentUI-QML.git
+```
 
-(Work in progress...🚀)
++ Build
+
+```bash
+git clone --recursive https://github.com/zhuzichu520/PySide6-FluentUI-QML.git
+cd PySide6-FluentUI-QML
+python ./script-init-venv.py
+python ./script-start.py
+```
 
 ## 📑 Documentations
 

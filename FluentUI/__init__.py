@@ -1,10 +1,3 @@
-#!/usr/bin/env python
-#-*- coding:utf-8 -*-
-import os
-from PySide6.QtQml import QQmlApplicationEngine
-
-def init(engine:QQmlApplicationEngine):
-    current_module_path = os.path.dirname(os.path.abspath(__file__))+"/qml"
-    print("FluentUI plugin dir ->"+current_module_path+"/FluentUI")
-    engine.addImportPath(current_module_path)
-    
+__name__ = "FluentUI"
+__version__ = "1.0.0"
+__author__ = "ZhuZiChu"
