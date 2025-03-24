@@ -48,6 +48,7 @@ git clone --recursive https://github.com/zhuzichu520/PySide6-FluentUI-QML.git
 cd PySide6-FluentUI-QML
 python ./script-init-venv.py
 python ./script-start.py
+python ./script-build-nuitka.py
 ```
 
 ## 📑 Documentations
